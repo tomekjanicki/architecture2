@@ -2,7 +2,7 @@
 {
     public class Startup : Common.Startup
     {
-        public override void Configure()
+        public void Configure()
         {
             ConfigureValidation();
         }
