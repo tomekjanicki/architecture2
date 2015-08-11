@@ -10,9 +10,9 @@ namespace Architecture2.Common.TemplateMethod
 
     {
         private readonly IPagedRepository<TItem, TQuery> _pagedRepository;
-        private readonly IValidator<SortPageSizeSkip<TItem>> _validator;
+        private readonly IValidator<TQuery> _validator;
 
-        protected PagedQueryTemplateHandler(IPagedRepository<TItem, TQuery> pagedRepository, IValidator<SortPageSizeSkip<TItem>> validator)
+        protected PagedQueryTemplateHandler(IPagedRepository<TItem, TQuery> pagedRepository, IValidator<TQuery> validator)
         {
             _pagedRepository = pagedRepository;
             _validator = validator;

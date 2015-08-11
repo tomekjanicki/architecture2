@@ -15,13 +15,13 @@ namespace Architecture2.Logic.Unit.Test.Product
         {
             private Logic.Product.Find.QueryHandler _sut;
             private IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Query> _repository;
-            private IValidator<SortPageSizeSkip<Logic.Product.Find.ProductItem>> _validator;
+            private IValidator<Logic.Product.Find.Query> _validator;
 
             public override void SetUp()
             {
                 base.SetUp();
                 _repository = Substitute.For<IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Query>>();
-                _validator = Substitute.For<IValidator<SortPageSizeSkip<Logic.Product.Find.ProductItem>>>();
+                _validator = Substitute.For<IValidator<Logic.Product.Find.Query>>();
                 _sut = new Logic.Product.Find.QueryHandler(_repository, _validator);
             }
 

@@ -43,7 +43,7 @@ namespace Architecture2.Logic.Product
         public class QueryHandler : PagedQueryTemplateHandler<Query, ProductItem>
         {
 
-            public QueryHandler(IPagedRepository<ProductItem, Query> pagedRepository, IValidator<SortPageSizeSkip<ProductItem>> validator) : base(pagedRepository, validator)
+            public QueryHandler(IPagedRepository<ProductItem, Query> pagedRepository, IValidator<Query> validator) : base(pagedRepository, validator)
             {
             }
 
