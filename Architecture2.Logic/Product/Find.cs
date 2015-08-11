@@ -85,13 +85,13 @@ namespace Architecture2.Logic.Product
                 });
             }
 
-            public Result<ProductItem> GetData(Query sortPageSizeSkipParam)
+            public Result<ProductItem> GetData(Query query)
             {
-                Debug.Assert(sortPageSizeSkipParam.Skip != null, $"{nameof(sortPageSizeSkipParam.Skip)} != null");
-                Debug.Assert(sortPageSizeSkipParam.PageSize != null, $"{nameof(sortPageSizeSkipParam.PageSize)} != null");
+                Debug.Assert(query.Skip != null, $"{nameof(query.Skip)} != null");
+                Debug.Assert(query.PageSize != null, $"{nameof(query.PageSize)} != null");
 
-                var whereFragment = GetWhereFragment(sortPageSizeSkipParam.Code, sortPageSizeSkipParam.Name);
-                var pagedFragment = CommandHelper.GetPagedFragment(new Page(sortPageSizeSkipParam.PageSize.Value, sortPageSizeSkipParam.Skip.Value), GetTranslatedSort(sortPageSizeSkipParam.Sort));
+                var whereFragment = GetWhereFragment(query.Code, query.Name);
+                var pagedFragment = CommandHelper.GetPagedFragment(new Page(query.PageSize.Value, query.Skip.Value), GetTranslatedSort(query.Sort));
 
                 var countQuery = string.Format(CountProductQuery, whereFragment.Query);
                 var selectQuery = string.Format(SelectProductQuery, whereFragment.Query, pagedFragment.Query);
