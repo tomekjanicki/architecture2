@@ -23,8 +23,29 @@ namespace Architecture2.Common.Tool
             Guard.NotNull(obj, nameof(obj));
             Guard.NotNull(type, nameof(type));
             var objectType = obj.GetType();
-            return objectType.IsGenericType && objectType.GetGenericTypeDefinition() == type || !objectType.IsGenericType && (objectType == type || obj.GetType().IsSubclassOf(type)) ;
+            return 
+                objectType.IsGenericType && (objectType.GetGenericTypeDefinition() == type || IsSubclassOfRawGeneric(type, objectType)) 
+                || 
+                !objectType.IsGenericType && (objectType == type || objectType.IsSubclassOf(type)) ;
         }
 
+        public static bool IsType(object obj, IReadOnlyCollection<Type> types)
+        {
+            Guard.NotNull(obj, nameof(obj));
+            Guard.NotNull(types, nameof(types));
+            return types.Any(type => IsType(obj, type));
+        }
+
+        private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
+        {
+            while (toCheck != null && toCheck != typeof(object))
+            {
+                var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+                if (generic == cur)
+                    return true;
+                toCheck = toCheck.BaseType;
+            }
+            return false;
+        }
     }
 }

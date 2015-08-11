@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
@@ -20,11 +21,14 @@ namespace Architecture2.Common.Web
 
         private static Tuple<HttpStatusCode, string> GetResponseParams(System.Exception exception)
         {
-            if (Extension.IsType(exception, typeof(ValidationException)))
+            if (Extension.IsType(exception, new List<Type> { typeof(ValidationException), typeof(ForeignKeyException<>)}))
                 return new Tuple<HttpStatusCode, string>(HttpStatusCode.BadRequest, exception.Message);
 
             if (Extension.IsType(exception, typeof(NotFoundException<>)))
                 return new Tuple<HttpStatusCode, string>(HttpStatusCode.NotFound, exception.Message);
+
+            if (Extension.IsType(exception, typeof(OptimisticConcurrencyException<>)))
+                return new Tuple<HttpStatusCode, string>((HttpStatusCode)428, exception.Message);
 
             return null;
         }
