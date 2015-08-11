@@ -21,7 +21,7 @@ namespace Architecture2.Logic.Product
         }
 
         [RegisterType]
-        public class CommandHandler : DeleteTemplateHandler<Command>
+        public class CommandHandler : DeleteCommandTemplateHandler<Command>
         {
             public CommandHandler(IValidator<Command> validator, IDeleteRepository deleteRepository) : base(validator, deleteRepository)
             {

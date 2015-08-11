@@ -9,12 +9,12 @@ using MediatR;
 
 namespace Architecture2.Common.TemplateMethod
 {
-    public abstract class DeleteTemplateHandler<T> : INotificationHandler<T> where T : IdWithRowVersion, INotification
+    public abstract class DeleteCommandTemplateHandler<T> : INotificationHandler<T> where T : IdWithRowVersion, INotification
     {
         private readonly IValidator<T> _validator;
         private readonly IDeleteRepository _deleteRepository;
 
-        protected DeleteTemplateHandler(IValidator<T> validator, IDeleteRepository deleteRepository)
+        protected DeleteCommandTemplateHandler(IValidator<T> validator, IDeleteRepository deleteRepository)
         {
             _validator = validator;
             _deleteRepository = deleteRepository;
