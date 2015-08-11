@@ -68,6 +68,8 @@
     <Compile Include="Database\DatabaseExtension.cs" />
     <Compile Include="Database\Interface\ICommand.cs" />
     <Compile Include="DependencyModule.cs" />
+    <Compile Include="Disposable.cs" />
+    <Compile Include="DisposableExtension.cs" />
     <Compile Include="Exception\Base\BaseException.cs" />
     <Compile Include="Exception\DbException.cs" />
     <Compile Include="Exception\Logic\Base\BaseLogicException.cs" />
