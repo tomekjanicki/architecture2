@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Architecture2.Common.Exception.Logic;
+using Architecture2.Common.TemplateMethod.Interface;
 using Architecture2.Common.Test;
 using FluentValidation;
 using FluentValidation.Results;
@@ -15,13 +16,13 @@ namespace Architecture2.Logic.Unit.Test.Product
             private Logic.Product.Delete.CommandHandler _sut;
 
             private IValidator<Logic.Product.Delete.Command> _validator;
-            private Logic.Product.Delete.IRepository _repository;
+            private IDeleteRepository _repository;
 
             public override void SetUp()
             {
                 base.SetUp();
                 _validator = Substitute.For<IValidator<Logic.Product.Delete.Command>>();
-                _repository = Substitute.For<Logic.Product.Delete.IRepository>();
+                _repository = Substitute.For<IDeleteRepository>();
                 _sut = new Logic.Product.Delete.CommandHandler(_validator, _repository);
             }
 
@@ -36,7 +37,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _validator.Validate(command).Returns(new ValidationResult());
 
-                _repository.GetVersion(command.Id.Value).Returns(version);
+                _repository.GetRowVersion(command.Id.Value).Returns(version);
 
                 _repository.CanDelete(command.Id.Value).Returns(true);
 
@@ -66,7 +67,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _validator.Validate(command).Returns(new ValidationResult());
 
-                _repository.GetVersion(command.Id.Value).Returns((byte[])null);
+                _repository.GetRowVersion(command.Id.Value).Returns((byte[])null);
 
                 Assert.Catch<NotFoundException<Logic.Product.Delete.Command>>(() => _sut.Handle(command));
             }
@@ -82,7 +83,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _validator.Validate(command).Returns(new ValidationResult());
 
-                _repository.GetVersion(command.Id.Value).Returns(version);
+                _repository.GetRowVersion(command.Id.Value).Returns(version);
 
                 _repository.CanDelete(command.Id.Value).Returns(false);
 
@@ -102,7 +103,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _validator.Validate(command).Returns(new ValidationResult());
 
-                _repository.GetVersion(command.Id.Value).Returns(version2);
+                _repository.GetRowVersion(command.Id.Value).Returns(version2);
 
                 Assert.Catch<OptimisticConcurrencyException<Logic.Product.Delete.Command>>(() => _sut.Handle(command));
             }

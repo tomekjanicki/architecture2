@@ -91,6 +91,7 @@
     <Compile Include="SharedValidator\IdWithRowVersionValidator.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TemplateMethod\DeleteTemplateHandler.cs" />
+    <Compile Include="TemplateMethod\Interface\IDeleteRepository.cs" />
     <Compile Include="Tool\Extension.cs" />
     <Compile Include="Tool\Guard.cs" />
   </ItemGroup>

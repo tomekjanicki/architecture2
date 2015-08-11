@@ -2,6 +2,7 @@
 using System.Transactions;
 using Architecture2.Common.Exception.Logic;
 using Architecture2.Common.SharedStruct;
+using Architecture2.Common.TemplateMethod.Interface;
 using Architecture2.Common.Tool;
 using FluentValidation;
 using MediatR;
@@ -11,11 +12,12 @@ namespace Architecture2.Common.TemplateMethod
     public abstract class DeleteTemplateHandler<T> : INotificationHandler<T> where T : IdWithRowVersion, INotification
     {
         private readonly IValidator<T> _validator;
+        private readonly IDeleteRepository _deleteRepository;
 
-
-        protected DeleteTemplateHandler(IValidator<T> validator)
+        protected DeleteTemplateHandler(IValidator<T> validator, IDeleteRepository deleteRepository)
         {
             _validator = validator;
+            _deleteRepository = deleteRepository;
         }
 
         public void Handle(T notification)
@@ -32,19 +34,11 @@ namespace Architecture2.Common.TemplateMethod
             _validator.ValidateAndThrow(notification);
         }
 
-        protected abstract byte[] GetRowVersion(int id);
-
-        protected abstract bool CanDelete(int id);
-
-        protected abstract string ConstraintName { get; }
-
-        protected abstract void Delete(int id);
-
         protected virtual void ExecuteNotFoundAndConcurrencyAndCanDelete(T notification)
         {
             Debug.Assert(notification.Id != null, $"{nameof(notification.Id)} != null");
 
-            var rowVersion = GetRowVersion(notification.Id.Value);
+            var rowVersion = _deleteRepository.GetRowVersion(notification.Id.Value);
 
             var idString = notification.Id.Value.ToString();
 
@@ -54,10 +48,10 @@ namespace Architecture2.Common.TemplateMethod
             if (!Extension.AreEqual(rowVersion, notification.Version))
                 throw new OptimisticConcurrencyException<T>(idString, rowVersion, notification.Version);
 
-            var canDelete = CanDelete(notification.Id.Value);
+            var canDelete = _deleteRepository.CanDelete(notification.Id.Value);
 
             if (!canDelete)
-                throw new ForeignKeyException<T>(idString) { Name = ConstraintName };
+                throw new ForeignKeyException<T>(idString) { Name = _deleteRepository.ConstraintName };
         }
 
         protected virtual void ExecuteDelete(T notification)
@@ -66,7 +60,7 @@ namespace Architecture2.Common.TemplateMethod
 
             using (var ts = new TransactionScope())
             {
-                Delete(notification.Id.Value);
+                _deleteRepository.Delete(notification.Id.Value);
                 ts.Complete();
             }
         }

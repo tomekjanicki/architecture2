@@ -3,6 +3,7 @@ using Architecture2.Common.IoC;
 using Architecture2.Common.SharedStruct;
 using Architecture2.Common.SharedValidator;
 using Architecture2.Common.TemplateMethod;
+using Architecture2.Common.TemplateMethod.Interface;
 using FluentValidation;
 using MediatR;
 
@@ -22,49 +23,20 @@ namespace Architecture2.Logic.Product
         [RegisterType]
         public class CommandHandler : DeleteTemplateHandler<Command>
         {
-            private readonly IRepository _repository;
-
-            public CommandHandler(IValidator<Command> validator, IRepository repository) : base(validator)
+            public CommandHandler(IValidator<Command> validator, IDeleteRepository deleteRepository) : base(validator, deleteRepository)
             {
-                _repository = repository;
             }
-
-            protected override byte[] GetRowVersion(int id)
-            {
-                return _repository.GetVersion(id);
-            }
-
-            protected override bool CanDelete(int id)
-            {
-                return _repository.CanDelete(id);
-            }
-
-            protected override string ConstraintName => "order_product";
-
-            protected override void Delete(int id)
-            {
-                _repository.Delete(id);
-            }
-        }
-
-        public interface IRepository
-        {
-            void Delete(int id);
-
-            byte[] GetVersion(int id);
-
-            bool CanDelete(int id);
         }
 
         [RegisterType]
-        public class Repository : IRepository
+        public class DeleteRepository : IDeleteRepository
         {
             public void Delete(int id)
             {
                 throw new NotImplementedException();
             }
 
-            public byte[] GetVersion(int id)
+            public byte[] GetRowVersion(int id)
             {
                 throw new NotImplementedException();
             }
@@ -73,6 +45,8 @@ namespace Architecture2.Logic.Product
             {
                 throw new NotImplementedException();
             }
+
+            public string ConstraintName => "product_order";
         }
 
 
