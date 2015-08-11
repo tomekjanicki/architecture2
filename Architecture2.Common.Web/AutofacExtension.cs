@@ -13,14 +13,14 @@ namespace Architecture2.Common.Web
 {
     public static class AutofacExtension
     {
-        public static IContainer ConfigureAutofacContainer(this IAppBuilder app, HttpConfiguration config, IReadOnlyCollection<Module> dependencyModules, WebOption webOption)
+        public static IContainer ConfigureContainer(this IAppBuilder app, HttpConfiguration config, IReadOnlyCollection<Module> dependencyModules, WebOption webOption)
         {
             var assemblies = new[] { Assembly.GetCallingAssembly() };
 
-            return app.ConfigureAutofacContainer(config, assemblies, dependencyModules, webOption);
+            return app.ConfigureContainer(config, assemblies, dependencyModules, webOption);
         }
 
-        public static void ConfigureAutofacContainer(ContainerBuilder builder, WebOption webOption, params Assembly[] applicationAssemblies)
+        public static void ConfigureContainer(ContainerBuilder builder, WebOption webOption, params Assembly[] applicationAssemblies)
         {
             var assemblies = applicationAssemblies.ToArray();
 
@@ -35,18 +35,16 @@ namespace Architecture2.Common.Web
                 builder.RegisterApiControllers(assemblies);
         }
 
-        public static IContainer ConfigureAutofacContainer(this IAppBuilder app, HttpConfiguration config, IReadOnlyCollection<Assembly> applicationAssemblies, IEnumerable<Module> dependencyModules, WebOption webOption)
+        public static IContainer ConfigureContainer(this IAppBuilder app, HttpConfiguration config, IReadOnlyCollection<Assembly> applicationAssemblies, IEnumerable<Module> dependencyModules, WebOption webOption)
         {
             var builder = new ContainerBuilder();
 
             foreach (var module in dependencyModules)
-            {
                 builder.RegisterModule(module);
-            }
 
             var assemblies = applicationAssemblies.ToArray();
 
-            ConfigureAutofacContainer(builder, webOption, assemblies);
+            ConfigureContainer(builder, webOption, assemblies);
 
             if (webOption.UseApi)
                 builder.RegisterWebApiFilterProvider(config);

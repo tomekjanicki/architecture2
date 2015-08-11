@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architecture2.Web", "Archit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architecture2.Logic.Unit.Test", "Architecture2.Logic.Unit.Test\Architecture2.Logic.Unit.Test.csproj", "{5E660B72-708B-44B5-9E54-7ECBA40BB2D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architecture2.Web.Unit.Test", "Architecture2.Web.Unit.Test\Architecture2.Web.Unit.Test.csproj", "{D319EF32-F977-4F52-AAF3-F217671EC1B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{5E660B72-708B-44B5-9E54-7ECBA40BB2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E660B72-708B-44B5-9E54-7ECBA40BB2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E660B72-708B-44B5-9E54-7ECBA40BB2D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D319EF32-F977-4F52-AAF3-F217671EC1B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D319EF32-F977-4F52-AAF3-F217671EC1B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D319EF32-F977-4F52-AAF3-F217671EC1B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D319EF32-F977-4F52-AAF3-F217671EC1B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

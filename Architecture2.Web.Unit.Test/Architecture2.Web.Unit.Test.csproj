@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{62E5AC10-C721-4984-9CA3-370C7C99D7E7}</ProjectGuid>
+    <ProjectGuid>{D319EF32-F977-4F52-AAF3-F217671EC1B4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Architecture2.Web</RootNamespace>
-    <AssemblyName>Architecture2.Web</AssemblyName>
+    <RootNamespace>Architecture2.Web.Unit.Test</RootNamespace>
+    <AssemblyName>Architecture2.Web.Unit.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,18 +34,6 @@
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MediatR, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MediatR.2.0.2\lib\net45\MediatR.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -54,8 +42,8 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -100,28 +88,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\HomeController.cs" />
-    <Compile Include="Controller\ProductController.cs" />
+    <Compile Include="IoCTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="log4net.Config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Architecture2.Common.Test\Architecture2.Common.Test.csproj">
+      <Project>{804CF238-C66F-473E-A763-26A3FFED57D4}</Project>
+      <Name>Architecture2.Common.Test</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Architecture2.Common.Web\Architecture2.Common.Web.csproj">
-      <Project>{9456919c-cbe9-4851-a74f-f4fd8556f0f5}</Project>
+      <Project>{9456919C-CBE9-4851-A74F-F4FD8556F0F5}</Project>
       <Name>Architecture2.Common.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Architecture2.Common\Architecture2.Common.csproj">
       <Project>{4E12E64D-721A-44BF-9507-C68560502570}</Project>
       <Name>Architecture2.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Architecture2.Logic\Architecture2.Logic.csproj">
-      <Project>{9EAF7516-0166-445D-9312-B214A2DB3DC3}</Project>
-      <Name>Architecture2.Logic</Name>
+    <ProjectReference Include="..\Architecture2.Web\Architecture2.Web.csproj">
+      <Project>{62E5AC10-C721-4984-9CA3-370C7C99D7E7}</Project>
+      <Name>Architecture2.Web</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
