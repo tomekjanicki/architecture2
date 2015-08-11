@@ -2,6 +2,8 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
+using Architecture2.Common.Exception.Logic;
+using Architecture2.Common.Tool;
 using FluentValidation;
 
 namespace Architecture2.Common.Web
@@ -18,9 +20,13 @@ namespace Architecture2.Common.Web
 
         private static Tuple<HttpStatusCode, string> GetResponseParams(System.Exception exception)
         {
-            var validationException = exception as ValidationException;
+            if (Extension.IsType(exception, typeof(ValidationException)))
+                return new Tuple<HttpStatusCode, string>(HttpStatusCode.BadRequest, exception.Message);
 
-            return validationException != null ? new Tuple<HttpStatusCode, string>(HttpStatusCode.BadRequest, validationException.Message) : null;
+            if (Extension.IsType(exception, typeof(NotFoundException<>)))
+                return new Tuple<HttpStatusCode, string>(HttpStatusCode.NotFound, exception.Message);
+
+            return null;
         }
 
     }

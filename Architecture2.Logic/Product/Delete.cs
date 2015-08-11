@@ -1,9 +1,8 @@
-﻿using System.Diagnostics;
-using System.Transactions;
-using Architecture2.Common.Exception.Logic;
+﻿using System;
+using Architecture2.Common.IoC;
 using Architecture2.Common.SharedStruct;
 using Architecture2.Common.SharedValidator;
-using Architecture2.Common.Tool;
+using Architecture2.Common.TemplateMethod;
 using FluentValidation;
 using MediatR;
 
@@ -15,47 +14,36 @@ namespace Architecture2.Logic.Product
         {
         }
 
+        [RegisterType]
         public class CommandValidator : IdWithRowVersionValidator<Command>
         {
         }
 
-        public class CommandHandler : INotificationHandler<Command>
+        [RegisterType]
+        public class CommandHandler : DeleteTemplateHandler<Command>
         {
-            private readonly IValidator<Command> _validator;
             private readonly IRepository _repository;
 
-            public CommandHandler(IValidator<Command> validator, IRepository repository)
+            public CommandHandler(IValidator<Command> validator, IRepository repository) : base(validator)
             {
-                _validator = validator;
                 _repository = repository;
             }
 
-            public void Handle(Command notification)
+            protected override byte[] GetRowVersion(int id)
             {
-                _validator.ValidateAndThrow(notification);
+                return _repository.GetVersion(id);
+            }
 
-                Debug.Assert(notification.Id != null, $"{nameof(notification.Id)} != null");
+            protected override bool CanDelete(int id)
+            {
+                return _repository.CanDelete(id);
+            }
 
-                var rowVersion = _repository.GetVersion(notification.Id.Value);
+            protected override string ConstraintName => "order_product";
 
-                var idString = notification.Id.Value.ToString();
-
-                if (rowVersion == null)
-                    throw new NotFoundException<Command>(idString);
-
-                if (!Extension.AreEqual(rowVersion, notification.Version))
-                    throw new OptimisticConcurrencyException<Command>(idString, rowVersion, notification.Version);
-
-                var canDelete = _repository.CanDelete(notification.Id.Value);
-
-                if (!canDelete)
-                    throw new ForeignKeyException<Command>(idString) { Name = "order_product" };
-
-                using (var ts = new TransactionScope())
-                {                    
-                    _repository.Delete(notification.Id.Value);
-                    ts.Complete();
-                }                
+            protected override void Delete(int id)
+            {
+                _repository.Delete(id);
             }
         }
 
@@ -66,6 +54,25 @@ namespace Architecture2.Logic.Product
             byte[] GetVersion(int id);
 
             bool CanDelete(int id);
+        }
+
+        [RegisterType]
+        public class Repository : IRepository
+        {
+            public void Delete(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public byte[] GetVersion(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool CanDelete(int id)
+            {
+                throw new NotImplementedException();
+            }
         }
 
 

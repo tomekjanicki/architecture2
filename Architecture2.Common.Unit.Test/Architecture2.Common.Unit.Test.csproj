@@ -45,9 +45,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tool\ExtensionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Architecture2.Common.Test\Architecture2.Common.Test.csproj">
+      <Project>{804CF238-C66F-473E-A763-26A3FFED57D4}</Project>
+      <Name>Architecture2.Common.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Architecture2.Common\Architecture2.Common.csproj">
+      <Project>{4E12E64D-721A-44BF-9507-C68560502570}</Project>
+      <Name>Architecture2.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

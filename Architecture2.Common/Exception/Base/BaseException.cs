@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Architecture2.Common.Exception
+namespace Architecture2.Common.Exception.Base
 {
     [Serializable]
     public abstract class BaseException : System.Exception

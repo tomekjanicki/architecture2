@@ -3,6 +3,8 @@ using System.Linq;
 using System.Transactions;
 using Architecture2.Common.Database.Interface;
 using Architecture2.Common.Exception;
+using Architecture2.Common.Exception.Base;
+using Architecture2.Common.IoC;
 using Architecture2.Common.Log4Net;
 using Architecture2.Common.Mail;
 using Architecture2.Common.Mail.Interface;
@@ -29,6 +31,7 @@ namespace Architecture2.Logic.Mail
             public int SuccessfulQty { get;  }
         }
 
+        [RegisterType]
         public class CommandHandler : IRequestHandler<Command, Result>
         {
             private static readonly ILog Logger = LogManager.GetLogger(typeof(CommandHandler));
@@ -88,6 +91,7 @@ namespace Architecture2.Logic.Mail
             void UpdateFinished(int id);
         }
 
+        [RegisterType]
         public class Repository : IRepository
         {
             private readonly ICommand _command;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using Architecture2.Common.Exception.Base;
 
 namespace Architecture2.Common.Exception
 {

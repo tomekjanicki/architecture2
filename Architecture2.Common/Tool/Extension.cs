@@ -18,6 +18,13 @@ namespace Architecture2.Common.Tool
             return bytes == null ? string.Empty : Convert.ToBase64String(bytes);
         }
 
+        public static bool IsType(object obj, Type type)
+        {
+            Guard.NotNull(obj, nameof(obj));
+            Guard.NotNull(type, nameof(type));
+            var objectType = obj.GetType();
+            return objectType.IsGenericType && objectType.GetGenericTypeDefinition() == type || !objectType.IsGenericType && (objectType == type || obj.GetType().IsSubclassOf(type)) ;
+        }
 
     }
 }

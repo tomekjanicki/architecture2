@@ -5,6 +5,7 @@ using System.Linq;
 using Architecture2.Common.Database;
 using Architecture2.Common.Database.Interface;
 using Architecture2.Common.FluentValidation;
+using Architecture2.Common.IoC;
 using Architecture2.Common.SharedStruct;
 using Dapper;
 using FluentValidation;
@@ -23,7 +24,7 @@ namespace Architecture2.Logic.Product
             public int? Skip { get; set; }
         }
 
-
+        [RegisterType]
         public class QueryValidator : AbstractClassValidator<Query>
         {
             public QueryValidator()
@@ -55,6 +56,7 @@ namespace Architecture2.Logic.Product
             public byte[] Version { get; set; }
         }
 
+        [RegisterType]
         public class QueryHandler : IRequestHandler<Query, Result>
         {
             private readonly IRepository _repository;
@@ -70,9 +72,7 @@ namespace Architecture2.Logic.Product
             {
                 _validator.ValidateAndThrow(query);
 
-                var result = _repository.GetData(query);
-
-                return result;
+                return _repository.GetData(query);
             }
 
         }
@@ -82,6 +82,7 @@ namespace Architecture2.Logic.Product
             Result GetData(Query query);
         }
 
+        [RegisterType]
         public class Repository : IRepository
         {
             private const string SelectProductQuery = @"SELECT ID, CODE, NAME, PRICE, VERSION, CASE WHEN ID < 20 THEN GETDATE() ELSE NULL END DATE, CASE WHEN O.PRODUCTID IS NULL THEN 1 ELSE 0 END CANDELETE FROM DBO.PRODUCTS P LEFT JOIN (SELECT DISTINCT PRODUCTID FROM DBO.ORDERSDETAILS) O ON P.ID = O.PRODUCTID {0} {1}";

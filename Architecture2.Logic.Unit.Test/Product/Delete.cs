@@ -16,6 +16,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
             private IValidator<Logic.Product.Delete.Command> _validator;
             private Logic.Product.Delete.IRepository _repository;
+
             public override void SetUp()
             {
                 base.SetUp();

@@ -1,5 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
+using System.Web.Mvc;
+using System.Web.Routing;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Owin;
@@ -14,9 +16,9 @@ namespace Architecture2.Common.Web
 
             if (webOption.UseMvc)
             {
-                //ConfigureMvcRoutes(RouteTable.Routes);
-                //ConfigureMvcFilters(GlobalFilters.Filters);
-                //ConfigureMvcViewEngines(ViewEngines.Engines);
+                ConfigureMvcRoutes(RouteTable.Routes);
+                ConfigureMvcFilters(GlobalFilters.Filters);
+                ConfigureMvcViewEngines(ViewEngines.Engines);
             }
 
             if (webOption.UseApi)
@@ -26,12 +28,11 @@ namespace Architecture2.Common.Web
                 ConfigureApiFilters(config);
                 ConfigureApiConventions(config);
 
-                //app.UseWebApi(config);
+                app.UseWebApi(config);
             }
 
             ConfigureValidation();
-
-            //ConfigureContainer(app, config, options);
+            ConfigureContainer(app, config, webOption);
         }
 
         protected virtual void ConfigureApiRoutes(HttpConfiguration config)
@@ -50,6 +51,35 @@ namespace Architecture2.Common.Web
         {
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new StringEnumConverter());
+        }
+
+        protected virtual void ConfigureMvcRoutes(RouteCollection routes)
+        {
+            AreaRegistration.RegisterAllAreas();
+
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute("Default", "{controller}/{action}/{id}", new
+            {
+                controller = "Home",
+                action = "Index",
+                id = RouteParameter.Optional
+            });
+        }
+
+        protected virtual void ConfigureMvcViewEngines(ViewEngineCollection viewEngines)
+        {
+
+        }
+
+        protected virtual void ConfigureContainer(IAppBuilder app, HttpConfiguration config, WebOption webOption)
+        {
+
+        }
+
+        protected virtual void ConfigureMvcFilters(GlobalFilterCollection filters)
+        {
+            filters.Add(new HandleMvcErrorAttribute());
         }
 
     }
