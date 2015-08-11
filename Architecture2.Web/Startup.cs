@@ -26,12 +26,12 @@ namespace Architecture2.Web
 
         protected override void ConfigureContainer(IAppBuilder app, HttpConfiguration config, WebOption webOption)
         {
-            var modules = GetModules(true);
+            var modules = GetModules();
 
             app.ConfigureContainer(config, modules, webOption);
         }
 
-        public IReadOnlyCollection<Module> GetModules(bool forWeb)
+        public IReadOnlyCollection<Module> GetModules()
         {
             return new Module[]
             {

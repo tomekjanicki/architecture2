@@ -29,7 +29,7 @@ namespace Architecture2.Web.Unit.Test
 
         private static void ConfigureContainer(ContainerBuilder containerBuilder, Assembly assembly)
         {
-            var modules = new Startup().GetModules(false);
+            var modules = new Startup().GetModules();
 
             foreach (var module in modules)
                 containerBuilder.RegisterModule(module);
