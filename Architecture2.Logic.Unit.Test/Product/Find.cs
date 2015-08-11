@@ -14,14 +14,14 @@ namespace Architecture2.Logic.Unit.Test.Product
         public class QueryHandlerTest : BaseTest
         {
             private Logic.Product.Find.QueryHandler _sut;
-            private IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Param> _repository;
-            private IValidator<SortPageSizeSkipParam<Logic.Product.Find.ProductItem, Logic.Product.Find.Param>> _validator;
+            private IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Query> _repository;
+            private IValidator<SortPageSizeSkipParam<Logic.Product.Find.ProductItem>> _validator;
 
             public override void SetUp()
             {
                 base.SetUp();
-                _repository = Substitute.For<IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Param>>();
-                _validator = Substitute.For<IValidator<SortPageSizeSkipParam<Logic.Product.Find.ProductItem, Logic.Product.Find.Param>>>();
+                _repository = Substitute.For<IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Query>>();
+                _validator = Substitute.For<IValidator<SortPageSizeSkipParam<Logic.Product.Find.ProductItem>>>();
                 _sut = new Logic.Product.Find.QueryHandler(_repository, _validator);
             }
 

@@ -5,14 +5,14 @@ using MediatR;
 
 namespace Architecture2.Common.TemplateMethod
 {
-    public abstract class PagedQueryTemplateHandler<TQuery, TItem, TParam> : IRequestHandler<TQuery, Result<TItem>> 
-        where TQuery : SortPageSizeSkipParam<TItem, TParam>
+    public abstract class PagedQueryTemplateHandler<TQuery, TItem> : IRequestHandler<TQuery, Result<TItem>> 
+        where TQuery : SortPageSizeSkipParam<TItem>
 
     {
-        private readonly IPagedRepository<TItem, TParam> _pagedRepository;
-        private readonly IValidator<SortPageSizeSkipParam<TItem, TParam>> _validator;
+        private readonly IPagedRepository<TItem, TQuery> _pagedRepository;
+        private readonly IValidator<SortPageSizeSkipParam<TItem>> _validator;
 
-        protected PagedQueryTemplateHandler(IPagedRepository<TItem, TParam> pagedRepository, IValidator<SortPageSizeSkipParam<TItem, TParam>> validator)
+        protected PagedQueryTemplateHandler(IPagedRepository<TItem, TQuery> pagedRepository, IValidator<SortPageSizeSkipParam<TItem>> validator)
         {
             _pagedRepository = pagedRepository;
             _validator = validator;

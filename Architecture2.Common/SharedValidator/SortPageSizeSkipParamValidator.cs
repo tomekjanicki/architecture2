@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Architecture2.Common.SharedValidator
 {
-    public class SortPageSizeSkipParamValidator<TItem, TParam> : AbstractClassValidator<SortPageSizeSkipParam<TItem, TParam>> 
+    public class SortPageSizeSkipParamValidator<TItem> : AbstractClassValidator<SortPageSizeSkipParam<TItem>> 
     {
         public SortPageSizeSkipParamValidator()
         {

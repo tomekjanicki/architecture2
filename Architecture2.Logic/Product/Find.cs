@@ -16,18 +16,14 @@ namespace Architecture2.Logic.Product
 {
     public class Find
     {
-        public class Param
+        public class Query : SortPageSizeSkipParam<ProductItem>
         {
             public string Name { get; set; }
             public string Code { get; set; }
         }
 
-        public class Query : SortPageSizeSkipParam<ProductItem, Param>
-        {
-        }
-
         [RegisterType]
-        public class QueryValidator : SortPageSizeSkipParamValidator<ProductItem, Param>
+        public class QueryValidator : SortPageSizeSkipParamValidator<ProductItem>
         {
 
         }
@@ -44,17 +40,17 @@ namespace Architecture2.Logic.Product
         }
 
         [RegisterType]
-        public class QueryHandler : PagedQueryTemplateHandler<Query, ProductItem, Param>
+        public class QueryHandler : PagedQueryTemplateHandler<Query, ProductItem>
         {
 
-            public QueryHandler(IPagedRepository<ProductItem, Param> pagedRepository, IValidator<SortPageSizeSkipParam<ProductItem, Param>> validator) : base(pagedRepository, validator)
+            public QueryHandler(IPagedRepository<ProductItem, Query> pagedRepository, IValidator<SortPageSizeSkipParam<ProductItem>> validator) : base(pagedRepository, validator)
             {
             }
 
         }
 
         [RegisterType]
-        public class Repository : IPagedRepository<ProductItem, Param>
+        public class Repository : IPagedRepository<ProductItem, Query>
         {
             private const string SelectProductQuery = @"SELECT ID, CODE, NAME, PRICE, VERSION, CASE WHEN ID < 20 THEN GETDATE() ELSE NULL END DATE, CASE WHEN O.PRODUCTID IS NULL THEN 1 ELSE 0 END CANDELETE FROM DBO.PRODUCTS P LEFT JOIN (SELECT DISTINCT PRODUCTID FROM DBO.ORDERSDETAILS) O ON P.ID = O.PRODUCTID {0} {1}";
             private const string CountProductQuery = @"SELECT COUNT(*) FROM DBO.PRODUCTS {0}";
@@ -89,12 +85,12 @@ namespace Architecture2.Logic.Product
                 });
             }
 
-            public Result<ProductItem> GetData(SortPageSizeSkipParam<ProductItem, Param> sortPageSizeSkipParam)
+            public Result<ProductItem> GetData(Query sortPageSizeSkipParam)
             {
                 Debug.Assert(sortPageSizeSkipParam.Skip != null, $"{nameof(sortPageSizeSkipParam.Skip)} != null");
                 Debug.Assert(sortPageSizeSkipParam.PageSize != null, $"{nameof(sortPageSizeSkipParam.PageSize)} != null");
 
-                var whereFragment = GetWhereFragment(sortPageSizeSkipParam.Param.Code, sortPageSizeSkipParam.Param.Name);
+                var whereFragment = GetWhereFragment(sortPageSizeSkipParam.Code, sortPageSizeSkipParam.Name);
                 var pagedFragment = CommandHelper.GetPagedFragment(new Page(sortPageSizeSkipParam.PageSize.Value, sortPageSizeSkipParam.Skip.Value), GetTranslatedSort(sortPageSizeSkipParam.Sort));
 
                 var countQuery = string.Format(CountProductQuery, whereFragment.Query);
