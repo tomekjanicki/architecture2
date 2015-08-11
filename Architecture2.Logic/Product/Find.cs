@@ -4,45 +4,32 @@ using System.Diagnostics;
 using System.Linq;
 using Architecture2.Common.Database;
 using Architecture2.Common.Database.Interface;
-using Architecture2.Common.FluentValidation;
 using Architecture2.Common.IoC;
 using Architecture2.Common.SharedStruct;
+using Architecture2.Common.SharedValidator;
+using Architecture2.Common.TemplateMethod;
+using Architecture2.Common.TemplateMethod.Interface;
 using Dapper;
 using FluentValidation;
-using MediatR;
 
 namespace Architecture2.Logic.Product
 {
     public class Find
     {
-        public class Query : IRequest<Result>
+        public class Param
         {
-            public string Sort { get; set; }
             public string Name { get; set; }
             public string Code { get; set; }
-            public int? PageSize { get; set; }
-            public int? Skip { get; set; }
+        }
+
+        public class Query : SortPageSizeSkipParam<ProductItem, Param>
+        {
         }
 
         [RegisterType]
-        public class QueryValidator : AbstractClassValidator<Query>
+        public class QueryValidator : SortPageSizeSkipParamValidator<ProductItem, Param>
         {
-            public QueryValidator()
-            {
-                RuleFor(query => query.PageSize).NotNull().InclusiveBetween(1, int.MaxValue);
-                RuleFor(query => query.Skip).NotNull().InclusiveBetween(0, int.MaxValue);
-            }
 
-        }
-
-        public class Result
-        {
-            public Result(Paged<ProductItem> results)
-            {
-                Results = results;
-            }
-
-            public Paged<ProductItem> Results { get;  }
         }
 
         public class ProductItem
@@ -57,33 +44,17 @@ namespace Architecture2.Logic.Product
         }
 
         [RegisterType]
-        public class QueryHandler : IRequestHandler<Query, Result>
+        public class QueryHandler : PagedQueryTemplateHandler<Query, ProductItem, Param>
         {
-            private readonly IRepository _repository;
-            private readonly IValidator<Query> _validator;
 
-            public QueryHandler(IRepository repository, IValidator<Query> validator)
+            public QueryHandler(IPagedRepository<ProductItem, Param> pagedRepository, IValidator<SortPageSizeSkipParam<ProductItem, Param>> validator) : base(pagedRepository, validator)
             {
-                _repository = repository;
-                _validator = validator;
             }
 
-            public Result Handle(Query query)
-            {
-                _validator.ValidateAndThrow(query);
-
-                return _repository.GetData(query);
-            }
-
-        }
-
-        public interface IRepository
-        {
-            Result GetData(Query query);
         }
 
         [RegisterType]
-        public class Repository : IRepository
+        public class Repository : IPagedRepository<ProductItem, Param>
         {
             private const string SelectProductQuery = @"SELECT ID, CODE, NAME, PRICE, VERSION, CASE WHEN ID < 20 THEN GETDATE() ELSE NULL END DATE, CASE WHEN O.PRODUCTID IS NULL THEN 1 ELSE 0 END CANDELETE FROM DBO.PRODUCTS P LEFT JOIN (SELECT DISTINCT PRODUCTID FROM DBO.ORDERSDETAILS) O ON P.ID = O.PRODUCTID {0} {1}";
             private const string CountProductQuery = @"SELECT COUNT(*) FROM DBO.PRODUCTS {0}";
@@ -93,23 +64,6 @@ namespace Architecture2.Logic.Product
             public Repository(ICommand command)
             {
                 _command = command;
-            }
-
-            public Result GetData(Query query)
-            {
-                Debug.Assert(query.Skip != null, $"{nameof(query.Skip)} != null");
-                Debug.Assert(query.PageSize != null, $"{nameof(query.PageSize)} != null");
-
-                var whereFragment = GetWhereFragment(query.Code, query.Name);
-                var pagedFragment = CommandHelper.GetPagedFragment(new Page(query.PageSize.Value, query.Skip.Value), GetTranslatedSort(query.Sort));
-
-                var countQuery = string.Format(CountProductQuery, whereFragment.Query);
-                var selectQuery = string.Format(SelectProductQuery, whereFragment.Query, pagedFragment.Query);
-                var count = _command.Query<int>(countQuery, whereFragment.Parameters).Single();
-                whereFragment.Parameters.AddDynamicParams(pagedFragment.Parameters);
-                var select = _command.Query<ProductItem>(selectQuery, whereFragment.Parameters);
-
-                return new Result(new Paged<ProductItem>(count, select));
             }
 
             private static CommandHelper.Result GetWhereFragment(string code, string name)
@@ -135,6 +89,22 @@ namespace Architecture2.Logic.Product
                 });
             }
 
+            public Result<ProductItem> GetData(SortPageSizeSkipParam<ProductItem, Param> sortPageSizeSkipParam)
+            {
+                Debug.Assert(sortPageSizeSkipParam.Skip != null, $"{nameof(sortPageSizeSkipParam.Skip)} != null");
+                Debug.Assert(sortPageSizeSkipParam.PageSize != null, $"{nameof(sortPageSizeSkipParam.PageSize)} != null");
+
+                var whereFragment = GetWhereFragment(sortPageSizeSkipParam.Param.Code, sortPageSizeSkipParam.Param.Name);
+                var pagedFragment = CommandHelper.GetPagedFragment(new Page(sortPageSizeSkipParam.PageSize.Value, sortPageSizeSkipParam.Skip.Value), GetTranslatedSort(sortPageSizeSkipParam.Sort));
+
+                var countQuery = string.Format(CountProductQuery, whereFragment.Query);
+                var selectQuery = string.Format(SelectProductQuery, whereFragment.Query, pagedFragment.Query);
+                var count = _command.Query<int>(countQuery, whereFragment.Parameters).Single();
+                whereFragment.Parameters.AddDynamicParams(pagedFragment.Parameters);
+                var select = _command.Query<ProductItem>(selectQuery, whereFragment.Parameters);
+
+                return new Result<ProductItem>(new Paged<ProductItem>(count, select));
+            }
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using Architecture2.Common.SharedStruct;
 using Architecture2.Logic.Product;
 using MediatR;
 
@@ -14,9 +15,9 @@ namespace Architecture2.Web.Controller
         }
 
         [HttpGet]
-        public Find.Result FindPaged(int? pageSize, int? skip, string code = null, string name = null, string sort = null)
+        public Result<Find.ProductItem> FindPaged(int? pageSize, int? skip, string code = null, string name = null, string sort = null)
         {
-            return _mediator.Send(new Find.Query {PageSize = pageSize, Skip = skip, Code = code, Name = name, Sort = sort});
+            return _mediator.Send(new Find.Query {PageSize = pageSize, Skip = skip, Sort = sort, Param = new Find.Param { Code = code, Name = name } });
         }
 
         [HttpDelete]

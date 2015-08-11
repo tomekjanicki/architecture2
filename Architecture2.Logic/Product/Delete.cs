@@ -5,13 +5,12 @@ using Architecture2.Common.SharedValidator;
 using Architecture2.Common.TemplateMethod;
 using Architecture2.Common.TemplateMethod.Interface;
 using FluentValidation;
-using MediatR;
 
 namespace Architecture2.Logic.Product
 {
     public class Delete
     {
-        public class Command : IdWithRowVersion, INotification
+        public class Command : IdWithRowVersion
         {
         }
 

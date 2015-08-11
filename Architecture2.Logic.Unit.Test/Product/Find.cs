@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Architecture2.Common.SharedStruct;
+using Architecture2.Common.TemplateMethod.Interface;
 using Architecture2.Common.Test;
 using FluentValidation;
 using FluentValidation.Results;
@@ -13,14 +14,14 @@ namespace Architecture2.Logic.Unit.Test.Product
         public class QueryHandlerTest : BaseTest
         {
             private Logic.Product.Find.QueryHandler _sut;
-            private Logic.Product.Find.IRepository _repository;
-            private IValidator<Logic.Product.Find.Query> _validator;
+            private IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Param> _repository;
+            private IValidator<SortPageSizeSkipParam<Logic.Product.Find.ProductItem, Logic.Product.Find.Param>> _validator;
 
             public override void SetUp()
             {
                 base.SetUp();
-                _repository = Substitute.For<Logic.Product.Find.IRepository>();
-                _validator = Substitute.For<IValidator<Logic.Product.Find.Query>>();
+                _repository = Substitute.For<IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Param>>();
+                _validator = Substitute.For<IValidator<SortPageSizeSkipParam<Logic.Product.Find.ProductItem, Logic.Product.Find.Param>>>();
                 _sut = new Logic.Product.Find.QueryHandler(_repository, _validator);
             }
 
@@ -31,7 +32,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _validator.Validate(query).Returns(new ValidationResult());
 
-                _repository.GetData(query).Returns(new Logic.Product.Find.Result(new Paged<Logic.Product.Find.ProductItem>(0, new List<Logic.Product.Find.ProductItem>())));
+                _repository.GetData(query).Returns(new Result<Logic.Product.Find.ProductItem>(new Paged<Logic.Product.Find.ProductItem>(0, new List<Logic.Product.Find.ProductItem>())));
 
                 var result = _sut.Handle(query);
 
