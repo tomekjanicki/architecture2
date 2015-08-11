@@ -35,8 +35,9 @@ namespace Architecture2.Web
         {
             return new Module[]
             {
+                new DependencyModule(),
                 new Logic.DependencyModule(),
-                new DependencyModule()
+                new Common.DependencyModule()
             };
         }
 
