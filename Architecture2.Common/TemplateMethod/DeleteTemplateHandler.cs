@@ -48,7 +48,7 @@ namespace Architecture2.Common.TemplateMethod
             if (!Extension.AreEqual(rowVersion, notification.Version))
                 throw new OptimisticConcurrencyException<T>(idString, rowVersion, notification.Version);
 
-            var canDelete = _deleteRepository.CanDelete(notification.Id.Value);
+            var canDelete = _deleteRepository.Can(notification.Id.Value);
 
             if (!canDelete)
                 throw new ForeignKeyException<T>(idString) { Name = _deleteRepository.ConstraintName };
@@ -60,7 +60,7 @@ namespace Architecture2.Common.TemplateMethod
 
             using (var ts = new TransactionScope())
             {
-                _deleteRepository.Delete(notification.Id.Value);
+                _deleteRepository.Execute(notification.Id.Value);
                 ts.Complete();
             }
         }

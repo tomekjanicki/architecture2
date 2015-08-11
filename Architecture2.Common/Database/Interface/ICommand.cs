@@ -8,5 +8,9 @@ namespace Architecture2.Common.Database.Interface
         void Execute(string sql, object param = null);
 
         IReadOnlyCollection<T> Query<T>(string sql, object param = null);
+
+        T SingleOrDefault<T>(string sql, object param = null);
+
+        T FirstOrDefault<T>(string sql, object param = null);
     }
 }

@@ -18,6 +18,16 @@ namespace Architecture2.Common.Database
             throw new NotImplementedException();
         }
 
+        public T SingleOrDefault<T>(string sql, object param = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T FirstOrDefault<T>(string sql, object param = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();

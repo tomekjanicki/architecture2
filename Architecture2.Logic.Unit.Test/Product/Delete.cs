@@ -39,11 +39,11 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _repository.GetRowVersion(command.Id.Value).Returns(version);
 
-                _repository.CanDelete(command.Id.Value).Returns(true);
+                _repository.Can(command.Id.Value).Returns(true);
 
                 _sut.Handle(command);
 
-                _repository.Received().Delete(command.Id.Value);
+                _repository.Received().Execute(command.Id.Value);
             }
 
             [Test]
@@ -85,7 +85,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _repository.GetRowVersion(command.Id.Value).Returns(version);
 
-                _repository.CanDelete(command.Id.Value).Returns(false);
+                _repository.Can(command.Id.Value).Returns(false);
 
                 Assert.Catch<ForeignKeyException<Logic.Product.Delete.Command>>(() => _sut.Handle(command));
             }

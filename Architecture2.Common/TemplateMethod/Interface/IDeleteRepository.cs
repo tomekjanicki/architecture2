@@ -2,11 +2,11 @@
 {
     public interface IDeleteRepository
     {
-        void Delete(int id);
+        void Execute(int id);
 
         byte[] GetRowVersion(int id);
 
-        bool CanDelete(int id);
+        bool Can(int id);
 
         string ConstraintName { get; }
     }
