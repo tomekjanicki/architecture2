@@ -2,7 +2,7 @@
 
 namespace Architecture2.Common.TemplateMethod.Interface
 {
-    public interface IPagedRepository<TItem, in TParam> where TParam : SortPageSizeSkipParam<TItem>
+    public interface IPagedRepository<TItem, in TParam> where TParam : SortPageSizeSkip<TItem>
     {
         Result<TItem> GetData(TParam param);
     }

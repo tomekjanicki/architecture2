@@ -91,14 +91,14 @@
     <Compile Include="SharedStruct\Paged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedValidator\IdWithRowVersionValidator.cs" />
-    <Compile Include="SharedValidator\SortPageSizeSkipParamValidator.cs" />
+    <Compile Include="SharedValidator\SortPageSizeSkipValidator.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TemplateMethod\DeleteCommandTemplateHandler.cs" />
     <Compile Include="TemplateMethod\Interface\IDeleteRepository.cs" />
     <Compile Include="TemplateMethod\Interface\IPagedRepository.cs" />
     <Compile Include="TemplateMethod\PagedQueryTemplateHandler.cs" />
     <Compile Include="SharedStruct\Result.cs" />
-    <Compile Include="SharedStruct\SortPageSizeSkipParam.cs" />
+    <Compile Include="SharedStruct\SortPageSizeSkip.cs" />
     <Compile Include="Tool\Extension.cs" />
     <Compile Include="Tool\Guard.cs" />
   </ItemGroup>

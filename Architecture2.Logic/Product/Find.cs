@@ -16,14 +16,14 @@ namespace Architecture2.Logic.Product
 {
     public class Find
     {
-        public class Query : SortPageSizeSkipParam<ProductItem>
+        public class Query : SortPageSizeSkip<ProductItem>
         {
             public string Name { get; set; }
             public string Code { get; set; }
         }
 
         [RegisterType]
-        public class QueryValidator : SortPageSizeSkipParamValidator<ProductItem>
+        public class QueryValidator : SortPageSizeSkipValidator<ProductItem>
         {
 
         }
@@ -43,7 +43,7 @@ namespace Architecture2.Logic.Product
         public class QueryHandler : PagedQueryTemplateHandler<Query, ProductItem>
         {
 
-            public QueryHandler(IPagedRepository<ProductItem, Query> pagedRepository, IValidator<SortPageSizeSkipParam<ProductItem>> validator) : base(pagedRepository, validator)
+            public QueryHandler(IPagedRepository<ProductItem, Query> pagedRepository, IValidator<SortPageSizeSkip<ProductItem>> validator) : base(pagedRepository, validator)
             {
             }
 
