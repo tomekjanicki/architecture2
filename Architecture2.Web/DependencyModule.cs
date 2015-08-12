@@ -11,6 +11,7 @@ namespace Architecture2.Web
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterTypes(ThisAssembly);
+
             builder.RegisterType<Mediator>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
             builder.Register<SingleInstanceFactory>(ctx =>
