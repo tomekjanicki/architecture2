@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Architecture2.Common.IoC;
 using Autofac;
 using MediatR;
