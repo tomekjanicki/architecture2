@@ -2,23 +2,18 @@
 using System.Linq;
 using System.Transactions;
 using Architecture2.Common.Database.Interface;
-using Architecture2.Common.Exception;
 using Architecture2.Common.Exception.Base;
+using Architecture2.Common.Handler.Interface;
 using Architecture2.Common.IoC;
 using Architecture2.Common.Log4Net;
 using Architecture2.Common.Mail;
 using Architecture2.Common.Mail.Interface;
 using log4net;
-using MediatR;
 
 namespace Architecture2.Logic.Mail
 {
     public class Send
     {
-        public class Command : IRequest<Result>
-        {             
-        }
-
         public class Result
         {
             public Result(int totalQty, int successfulQty)
@@ -32,7 +27,7 @@ namespace Architecture2.Logic.Mail
         }
 
         [RegisterType]
-        public class CommandHandler : IRequestHandler<Command, Result>
+        public class CommandHandler : IHandler<Result>
         {
             private static readonly ILog Logger = LogManager.GetLogger(typeof(CommandHandler));
 
@@ -45,7 +40,7 @@ namespace Architecture2.Logic.Mail
                 _mailService = mailService;
             }
 
-            public Result Handle(Command message)
+            public Result Handle()
             {
                 var successCounter = 0;
                 var list = _repository.Find10OldestMailDefinitions().ToList();
@@ -103,17 +98,17 @@ namespace Architecture2.Logic.Mail
 
             public IReadOnlyCollection<TenOldestMailDefinitionItem> Find10OldestMailDefinitions()
             {
-                throw new System.NotImplementedException();
+                return _command.Query<TenOldestMailDefinitionItem>("");
             }
 
             public void UpdateTryCount(TryCountItem updateTryCount)
             {
-                throw new System.NotImplementedException();
+                _command.Execute("");
             }
 
             public void UpdateFinished(int id)
             {
-                throw new System.NotImplementedException();
+                _command.Execute("");
             }
         }
 

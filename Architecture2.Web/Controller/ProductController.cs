@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
+using Architecture2.Common.Handler.Interface;
 using Architecture2.Common.SharedStruct;
 using Architecture2.Logic.Product;
-using MediatR;
 
 namespace Architecture2.Web.Controller
 {
@@ -23,7 +23,7 @@ namespace Architecture2.Web.Controller
         [HttpDelete]
         public IHttpActionResult Delete(Delete.Command command)
         {
-            _mediator.Publish(command);
+            _mediator.Send(command);
 
             return Ok();
         }

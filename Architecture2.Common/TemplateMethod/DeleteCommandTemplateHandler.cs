@@ -1,15 +1,15 @@
 ﻿using System.Diagnostics;
 using System.Transactions;
 using Architecture2.Common.Exception.Logic;
+using Architecture2.Common.Handler.Interface;
 using Architecture2.Common.SharedStruct;
 using Architecture2.Common.TemplateMethod.Interface;
 using Architecture2.Common.Tool;
 using FluentValidation;
-using MediatR;
 
 namespace Architecture2.Common.TemplateMethod
 {
-    public abstract class DeleteCommandTemplateHandler<T> : INotificationHandler<T> where T : IdWithRowVersion, INotification
+    public abstract class DeleteCommandTemplateHandler<T> : IRequestHandler<T> where T : IdWithRowVersion, IRequest
     {
         private readonly IValidator<T> _validator;
         private readonly IDeleteRepository _deleteRepository;
@@ -20,47 +20,47 @@ namespace Architecture2.Common.TemplateMethod
             _deleteRepository = deleteRepository;
         }
 
-        public void Handle(T notification)
+        public void Handle(T message)
         {
-            ExecuteValidatate(notification);
+            ExecuteValidatate(message);
 
-            ExecuteNotFoundAndConcurrencyAndCanDelete(notification);
+            ExecuteNotFoundAndConcurrencyAndCanDelete(message);
 
-            ExecuteDelete(notification);
+            ExecuteDelete(message);
         }
 
-        protected virtual void ExecuteValidatate(T notification)
+        protected virtual void ExecuteValidatate(T message)
         {
-            _validator.ValidateAndThrow(notification);
+            _validator.ValidateAndThrow(message);
         }
 
-        protected virtual void ExecuteNotFoundAndConcurrencyAndCanDelete(T notification)
+        protected virtual void ExecuteNotFoundAndConcurrencyAndCanDelete(T message)
         {
-            Debug.Assert(notification.Id != null, $"{nameof(notification.Id)} != null");
+            Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
 
-            var rowVersion = _deleteRepository.GetRowVersion(notification.Id.Value);
+            var rowVersion = _deleteRepository.GetRowVersion(message.Id.Value);
 
-            var idString = notification.Id.Value.ToString();
+            var idString = message.Id.Value.ToString();
 
             if (rowVersion == null)
                 throw new NotFoundException<T>(idString);
 
-            if (!Extension.AreEqual(rowVersion, notification.Version))
-                throw new OptimisticConcurrencyException<T>(idString, rowVersion, notification.Version);
+            if (!Extension.AreEqual(rowVersion, message.Version))
+                throw new OptimisticConcurrencyException<T>(idString, rowVersion, message.Version);
 
-            var canDelete = _deleteRepository.Can(notification.Id.Value);
+            var canDelete = _deleteRepository.Can(message.Id.Value);
 
             if (!canDelete)
                 throw new ForeignKeyException<T>(idString) { Name = _deleteRepository.ConstraintName };
         }
 
-        protected virtual void ExecuteDelete(T notification)
+        protected virtual void ExecuteDelete(T message)
         {
-            Debug.Assert(notification.Id != null, $"{nameof(notification.Id)} != null");
+            Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
 
             using (var ts = new TransactionScope())
             {
-                _deleteRepository.Execute(notification.Id.Value);
+                _deleteRepository.Execute(message.Id.Value);
                 ts.Complete();
             }
         }

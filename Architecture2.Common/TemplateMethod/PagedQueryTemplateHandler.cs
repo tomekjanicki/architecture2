@@ -1,7 +1,7 @@
-﻿using Architecture2.Common.SharedStruct;
+﻿using Architecture2.Common.Handler.Interface;
+using Architecture2.Common.SharedStruct;
 using Architecture2.Common.TemplateMethod.Interface;
 using FluentValidation;
-using MediatR;
 
 namespace Architecture2.Common.TemplateMethod
 {

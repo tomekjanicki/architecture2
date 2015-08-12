@@ -32,7 +32,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
 
                 _repository.Find10OldestMailDefinitions().Returns(items);
 
-                var result = _sut.Handle(new Logic.Mail.Send.Command());
+                var result = _sut.Handle();
 
                 Assert.That(result != null && result.TotalQty == result.SuccessfulQty && result.TotalQty == items.Count);
             }
@@ -46,7 +46,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
 
                 _repository.When(repository => repository.UpdateFinished(Arg.Any<int>())).Do(info => { throw new DbException(""); });
 
-                var result = _sut.Handle(new Logic.Mail.Send.Command());
+                var result = _sut.Handle();
 
                 Assert.That(result != null && result.SuccessfulQty == 0);
             }
@@ -60,7 +60,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
 
                 _repository.When(repository => repository.UpdateFinished(Arg.Any<int>())).Do(info => { throw new Exception(""); });
 
-                Assert.Catch<Exception>(() => _sut.Handle(new Logic.Mail.Send.Command()));
+                Assert.Catch<Exception>(() => _sut.Handle());
             }
 
             private static IReadOnlyCollection<Logic.Mail.Send.TenOldestMailDefinitionItem> TenOldestMailDefinitionItems()
