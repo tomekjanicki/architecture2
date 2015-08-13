@@ -73,6 +73,7 @@
     <Compile Include="Exception\Logic\ForeignKeyException.cs" />
     <Compile Include="Exception\Logic\NotFoundException.cs" />
     <Compile Include="Exception\Logic\OptimisticConcurrencyException.cs" />
+    <Compile Include="Exception\Logic\UniqueConstraintException.cs" />
     <Compile Include="FluentValidation\AbstractClassValidator.cs" />
     <Compile Include="FluentValidation\Helper.cs" />
     <Compile Include="Handler\Interface\IHandler.cs" />
@@ -103,9 +104,11 @@
     <Compile Include="TemplateMethod\DeleteCommandTemplateHandler.cs" />
     <Compile Include="TemplateMethod\Interface\IDeleteRepository.cs" />
     <Compile Include="TemplateMethod\Interface\IPagedRepository.cs" />
+    <Compile Include="TemplateMethod\Interface\IUpdateRepository.cs" />
     <Compile Include="TemplateMethod\PagedQueryTemplateHandler.cs" />
     <Compile Include="SharedStruct\Result.cs" />
     <Compile Include="SharedStruct\SortPageSizeSkip.cs" />
+    <Compile Include="TemplateMethod\UpdateCommandTemplateHandler.cs" />
     <Compile Include="Tool\Extension.cs" />
     <Compile Include="Tool\Guard.cs" />
   </ItemGroup>

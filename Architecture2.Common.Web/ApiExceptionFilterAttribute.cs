@@ -21,7 +21,7 @@ namespace Architecture2.Common.Web
 
         private static Tuple<HttpStatusCode, string> GetResponseParams(System.Exception exception)
         {
-            if (Extension.IsType(exception, new List<Type> { typeof(ValidationException), typeof(ForeignKeyException<>)}))
+            if (Extension.IsType(exception, new List<Type> { typeof(ValidationException), typeof(ForeignKeyException<>), typeof(UniqueConstraintException<>) }))
                 return new Tuple<HttpStatusCode, string>(HttpStatusCode.BadRequest, exception.Message);
 
             if (Extension.IsType(exception, typeof(NotFoundException<>)))

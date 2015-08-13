@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Transactions;
 using Architecture2.Common.Exception.Logic;
 using Architecture2.Common.Handler.Interface;
@@ -9,17 +9,16 @@ using FluentValidation;
 
 namespace Architecture2.Common.TemplateMethod
 {
-    public abstract class DeleteCommandTemplateHandler<T> : IRequestHandler<T> where T : IdWithRowVersion, IRequest
+    public abstract class UpdateCommandTemplateHandler<T> : IRequestHandler<T> where T : IdWithRowVersion, IRequest
     {
         private readonly IValidator<T> _validator;
-        private readonly IDeleteRepository _deleteRepository;
+        private readonly IUpdateRepository<T> _updateRepository;
 
-        protected DeleteCommandTemplateHandler(IValidator<T> validator, IDeleteRepository deleteRepository)
+        protected UpdateCommandTemplateHandler(IValidator<T> validator, IUpdateRepository<T> updateRepository)
         {
             _validator = validator;
-            _deleteRepository = deleteRepository;
+            _updateRepository = updateRepository;
         }
-
         public void Handle(T message)
         {
             ExecuteValidatate(message);
@@ -38,7 +37,7 @@ namespace Architecture2.Common.TemplateMethod
         {
             Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
 
-            var rowVersion = _deleteRepository.GetRowVersion(message.Id.Value);
+            var rowVersion = _updateRepository.GetRowVersion(message.Id.Value);
 
             var idString = message.Id.Value.ToString();
 
@@ -48,21 +47,20 @@ namespace Architecture2.Common.TemplateMethod
             if (!Extension.AreEqual(rowVersion, message.Version))
                 throw new OptimisticConcurrencyException<T>(idString, rowVersion, message.Version);
 
-            var can = _deleteRepository.Can(message.Id.Value);
+            var can = _updateRepository.Can(message);
 
             if (!can)
-                throw new ForeignKeyException<T>(idString) { Name = _deleteRepository.ConstraintName };
+                throw new UniqueConstraintException<T>(idString) { Name = _updateRepository.ConstraintName };
         }
 
         protected virtual void Execute(T message)
         {
-            Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
-
             using (var ts = new TransactionScope())
             {
-                _deleteRepository.Execute(message.Id.Value);
+                _updateRepository.Execute(message);
                 ts.Complete();
             }
         }
+
     }
 }
