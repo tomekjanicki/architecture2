@@ -78,6 +78,11 @@
     <Compile Include="Handler\Interface\IMediator.cs" />
     <Compile Include="Handler\Interface\IRequest.cs" />
     <Compile Include="Handler\Interface\IRequestHandler.cs" />
+    <Compile Include="Handler\Internal\AbstractHandlerWrapper.cs" />
+    <Compile Include="Handler\Internal\HandlerWrapper.cs" />
+    <Compile Include="Handler\Internal\RequestHandlerWrapper.cs" />
+    <Compile Include="Handler\Internal\VoidRequestHandlerWrapper.cs" />
+    <Compile Include="Handler\Mediator.cs" />
     <Compile Include="IoC\Extension.cs" />
     <Compile Include="IoC\RegisterTypeAttribute.cs" />
     <Compile Include="IoC\RegisterTypeScope.cs" />
