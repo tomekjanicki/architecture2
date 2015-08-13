@@ -67,7 +67,8 @@
     <Compile Include="Disposable.cs" />
     <Compile Include="DisposableExtension.cs" />
     <Compile Include="Exception\Base\BaseException.cs" />
-    <Compile Include="Exception\DbException.cs" />
+    <Compile Include="Exception\ExceptionConverter.cs" />
+    <Compile Include="Database\Exception\DbException.cs" />
     <Compile Include="Exception\Logic\Base\BaseLogicException.cs" />
     <Compile Include="Exception\Logic\ForeignKeyException.cs" />
     <Compile Include="Exception\Logic\NotFoundException.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="IoC\RegisterTypeAttribute.cs" />
     <Compile Include="IoC\RegisterTypeScope.cs" />
     <Compile Include="Log4Net\Extension.cs" />
+    <Compile Include="Mail\Exception\MailServiceException.cs" />
     <Compile Include="Mail\Interface\IMailService.cs" />
     <Compile Include="Mail\MailDefinition.cs" />
     <Compile Include="Mail\MailService.cs" />

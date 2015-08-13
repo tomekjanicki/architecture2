@@ -2,17 +2,14 @@
 using System.Runtime.Serialization;
 using Architecture2.Common.Exception.Base;
 
-namespace Architecture2.Common.Exception
+namespace Architecture2.Common.Database.Exception
 {
     [Serializable]
     public class DbException : BaseException
     {
-        public DbException(string message) : base(message)
-        {
-        }
 
-        public DbException(string messsage, System.Exception innerException)
-            : base(messsage, innerException)
+        public DbException(System.Exception innerException)
+            : base("Error during handling repository operation. See inner exception for details", innerException)
         {
         }
 

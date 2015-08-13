@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Architecture2.Common.Exception;
+using Architecture2.Common.Database.Exception;
 using Architecture2.Common.Mail;
 using Architecture2.Common.Mail.Interface;
 using Architecture2.Common.Test;
@@ -44,7 +44,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
 
                 _repository.Find10OldestMailDefinitions().Returns(items);
 
-                _repository.When(repository => repository.UpdateFinished(Arg.Any<int>())).Do(info => { throw new DbException(""); });
+                _repository.When(repository => repository.UpdateFinished(Arg.Any<int>())).Do(info => { throw new DbException(null); });
 
                 var result = _sut.Handle();
 

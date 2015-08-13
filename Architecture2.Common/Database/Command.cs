@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using Architecture2.Common.Database.Exception;
 using Architecture2.Common.Database.Interface;
+using Architecture2.Common.Exception;
 using Architecture2.Common.IoC;
 using Dapper;
 
@@ -10,12 +13,16 @@ namespace Architecture2.Common.Database
     [RegisterType]
     public class Command : Disposable, ICommand
     {
+        private readonly ExceptionConverter _exceptionConverter;
+
         private IDbConnection _connection;
 
         private bool _disposed;
 
         public Command()
         {
+            var types = new[] { typeof(SqlException) };
+            _exceptionConverter = new ExceptionConverter(types, exception => new DbException(exception));
             _connection = DatabaseExtension.GetConnection("Main", false);
         }
 
@@ -28,26 +35,30 @@ namespace Architecture2.Common.Database
 
         public void Execute(string sql, object param = null)
         {
-            OpenConnection();
-            _connection.Execute(sql, param);
+            _exceptionConverter.HandleAction(() =>
+            {
+                OpenConnection();
+                _connection.Execute(sql, param);
+            });
         }
 
         public IReadOnlyCollection<T> Query<T>(string sql, object param = null)
         {
-            OpenConnection();
-            return _connection.Query<T>(sql, param).ToList();
+            return _exceptionConverter.HandleFunction(() =>
+            {
+                OpenConnection();
+                return _connection.Query<T>(sql, param).ToList();
+            });
         }
 
         public T SingleOrDefault<T>(string sql, object param = null)
         {
-            OpenConnection();
-            return _connection.Query<T>(sql, param).SingleOrDefault();
+            return Query<T>(sql, param).SingleOrDefault();
         }
 
         public T FirstOrDefault<T>(string sql, object param = null)
         {
-            OpenConnection();
-            return _connection.Query<T>(sql, param).FirstOrDefault();
+            return Query<T>(sql, param).FirstOrDefault();
         }
 
         protected override void Dispose(bool disposing)
