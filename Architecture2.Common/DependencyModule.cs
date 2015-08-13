@@ -10,10 +10,10 @@ namespace Architecture2.Common
         {
             builder.RegisterTypes(ThisAssembly);
 
-            builder.Register<Func<Type, object>>(ctx =>
+            builder.Register<Func<Type, object>>(context =>
             {
-                var c = ctx.Resolve<IComponentContext>();
-                return t => c.Resolve(t);
+                var componentContext = context.Resolve<IComponentContext>();
+                return serviceType => componentContext.Resolve(serviceType);
             });
 
         }
