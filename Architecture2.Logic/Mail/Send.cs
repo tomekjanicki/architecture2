@@ -98,18 +98,30 @@ namespace Architecture2.Logic.Mail
 
             public IReadOnlyCollection<TenOldestMailDefinitionItem> Find10OldestMailDefinitions()
             {
-                return _command.Query<TenOldestMailDefinitionItem>("");
+                var data = _command.Query<MailDefinitionHelper>("SELECT TOP 10 ID, TRYCOUNT, DATA FROM DBO.MAILS WHERE TRYCOUNT < 3 AND SENT = 0 ORDER BY CREATED DESC");
+                return data.Select(helper => new TenOldestMailDefinitionItem { Id = helper.Id, TryCount = helper.TryCount, MailDefinition = MailDefinition.FromBytes(helper.Data) }).ToList();
             }
 
             public void UpdateTryCount(TryCountItem updateTryCount)
             {
-                _command.Execute("");
+                _command.Execute("UPDATE DBO.MAILS SET TRYCOUNT = @TRYCOUNT WHERE ID = @ID", new { ID = updateTryCount.Id, TRYCOUNT = updateTryCount.TryCount });
             }
 
             public void UpdateFinished(int id)
             {
-                _command.Execute("");
+                _command.Execute("UPDATE DBO.MAILS SET SENT = 1 WHERE ID = @ID", new { ID = id });
             }
+
+            // ReSharper disable once ClassNeverInstantiated.Local
+            private class MailDefinitionHelper
+            {
+                // ReSharper disable UnusedAutoPropertyAccessor.Local
+                public int Id { get; set; }
+                public byte[] Data { get; set; }
+                public int TryCount { get; set; }
+                // ReSharper restore UnusedAutoPropertyAccessor.Local
+            }
+
         }
 
         public class TenOldestMailDefinitionItem

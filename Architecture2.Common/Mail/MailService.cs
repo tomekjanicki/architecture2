@@ -10,6 +10,7 @@ namespace Architecture2.Common.Mail
     {
         public void Send(MailMessage message)
         {
+            //todo wrap exception
             throw new NotImplementedException();
         }
     }
