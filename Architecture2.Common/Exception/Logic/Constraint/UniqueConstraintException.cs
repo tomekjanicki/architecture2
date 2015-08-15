@@ -1,13 +1,12 @@
 using System;
 using System.Runtime.Serialization;
-using Architecture2.Common.Exception.Logic.Base;
+using Architecture2.Common.Exception.Logic.Constraint.Base;
 
-namespace Architecture2.Common.Exception.Logic
+namespace Architecture2.Common.Exception.Logic.Constraint
 {
     [Serializable]
-    public class UniqueConstraintException<T> : BaseLogicException<T>
+    public class UniqueConstraintException<T> : BaseConstraintException<T>
     {
-        public string Name { get; set; }
         public UniqueConstraintException(string key) : base(key)
         {
         }
@@ -25,15 +24,6 @@ namespace Architecture2.Common.Exception.Logic
         {
             base.GetObjectData(info, context);
             info.AddValue(nameof(Name), Name);
-        }
-
-        public override string Message
-        {
-            get
-            {
-                var message = base.Message;
-                return $"{message}\r\nName: {Name}";
-            }
         }
 
         protected override string Text => "Unique Constraint";

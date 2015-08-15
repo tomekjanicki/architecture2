@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
 using Architecture2.Common.Exception.Logic;
-using Architecture2.Common.TemplateMethod.Interface;
+using Architecture2.Common.Exception.Logic.Constraint;
 using Architecture2.Common.Test;
 using FluentValidation;
 using FluentValidation.Results;
 using NSubstitute;
 using NUnit.Framework;
+using Helper = Architecture2.Common.FluentValidation.Helper;
 
 namespace Architecture2.Logic.Unit.Test.Product
 {
@@ -16,13 +17,13 @@ namespace Architecture2.Logic.Unit.Test.Product
             private Logic.Product.Delete.CommandHandler _sut;
 
             private IValidator<Logic.Product.Delete.Command> _validator;
-            private IDeleteRepository _repository;
+            private Logic.Product.Delete.IDeleteProductRepository _repository;
 
             public override void SetUp()
             {
                 base.SetUp();
                 _validator = Substitute.For<IValidator<Logic.Product.Delete.Command>>();
-                _repository = Substitute.For<IDeleteRepository>();
+                _repository = Substitute.For<Logic.Product.Delete.IDeleteProductRepository>();
                 _sut = new Logic.Product.Delete.CommandHandler(_validator, _repository);
             }
 
@@ -51,7 +52,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             {
                 var command = new Logic.Product.Delete.Command();
 
-                _validator.Validate(command).Returns(Common.FluentValidation.Helper.GetErrorValidationResult());
+                _validator.Validate(command).Returns(Helper.GetErrorValidationResult());
 
                 Assert.Catch<ValidationException>(() => _sut.Handle(command));
             }
@@ -143,7 +144,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 var result = _sut.Validate(command);
 
-                Assert.That(Helper.HasError(result, nameof(Logic.Product.Delete.Command.Id)));
+                Assert.That(Common.Test.Helper.HasError(result, nameof(Logic.Product.Delete.Command.Id)));
             }
 
 
@@ -154,7 +155,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 var result = _sut.Validate(command);
 
-                Assert.That(Helper.HasError(result, nameof(Logic.Product.Delete.Command.Version)));
+                Assert.That(Common.Test.Helper.HasError(result, nameof(Logic.Product.Delete.Command.Version)));
             }
 
             [Test]
@@ -164,7 +165,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 var result = _sut.Validate(command);
 
-                Assert.That(Helper.HasError(result, nameof(Logic.Product.Delete.Command.Version)));
+                Assert.That(Common.Test.Helper.HasError(result, nameof(Logic.Product.Delete.Command.Version)));
             }
 
             [Test]

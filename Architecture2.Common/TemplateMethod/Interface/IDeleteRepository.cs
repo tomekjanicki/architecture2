@@ -5,9 +5,5 @@
         void Execute(int id);
 
         byte[] GetRowVersion(int id);
-
-        bool Can(int id);
-
-        string ConstraintName { get; }
     }
 }

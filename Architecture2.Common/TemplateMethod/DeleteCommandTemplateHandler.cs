@@ -9,58 +9,61 @@ using FluentValidation;
 
 namespace Architecture2.Common.TemplateMethod
 {
-    public abstract class DeleteCommandTemplateHandler<T> : IRequestHandler<T> where T : IdWithRowVersion, IRequest
+    public abstract class DeleteCommandTemplateHandler<TCommand, TDeleteRepository> : IRequestHandler<TCommand> 
+        where TCommand : IdWithRowVersion, IRequest
+        where TDeleteRepository : IDeleteRepository
     {
-        private readonly IValidator<T> _validator;
-        private readonly IDeleteRepository _deleteRepository;
+        private readonly IValidator<TCommand> _validator;
+        protected readonly TDeleteRepository DeleteRepository;
 
-        protected DeleteCommandTemplateHandler(IValidator<T> validator, IDeleteRepository deleteRepository)
+        protected DeleteCommandTemplateHandler(IValidator<TCommand> validator, TDeleteRepository deleteRepository)
         {
             _validator = validator;
-            _deleteRepository = deleteRepository;
+            DeleteRepository = deleteRepository;
         }
 
-        public void Handle(T message)
+        public void Handle(TCommand message)
         {
             ExecuteValidatate(message);
 
-            ExecuteNotFoundAndConcurrencyAndCan(message);
+            ExecuteNotFoundAndConcurrency(message);
+
+            ExcecuteBeforeExecute(message);
 
             Execute(message);
         }
 
-        protected virtual void ExecuteValidatate(T message)
+        protected virtual void ExecuteValidatate(TCommand message)
         {
             _validator.ValidateAndThrow(message);
         }
 
-        protected virtual void ExecuteNotFoundAndConcurrencyAndCan(T message)
+        protected virtual void ExecuteNotFoundAndConcurrency(TCommand message)
         {
             Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
 
-            var rowVersion = _deleteRepository.GetRowVersion(message.Id.Value);
+            var rowVersion = DeleteRepository.GetRowVersion(message.Id.Value);
 
             var idString = message.Id.Value.ToString();
 
             if (rowVersion == null)
-                throw new NotFoundException<T>(idString);
+                throw new NotFoundException<TCommand>(idString);
 
             if (!Extension.AreEqual(rowVersion, message.Version))
-                throw new OptimisticConcurrencyException<T>(idString, rowVersion, message.Version);
-
-            var can = _deleteRepository.Can(message.Id.Value);
-
-            if (!can)
-                throw new ForeignKeyException<T>(idString) { Name = _deleteRepository.ConstraintName };
+                throw new OptimisticConcurrencyException<TCommand>(idString, rowVersion, message.Version);
         }
 
-        protected virtual void Execute(T message)
+        protected virtual void ExcecuteBeforeExecute(TCommand message)
+        {
+            
+        }
+        protected virtual void Execute(TCommand message)
         {
             Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
 
             using (var ts = new TransactionScope())
             {
-                _deleteRepository.Execute(message.Id.Value);
+                DeleteRepository.Execute(message.Id.Value);
                 ts.Complete();
             }
         }

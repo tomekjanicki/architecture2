@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
 using Architecture2.Common.Exception.Logic;
+using Architecture2.Common.Exception.Logic.Constraint.Base;
 using Architecture2.Common.Tool;
 using FluentValidation;
 
@@ -21,7 +22,7 @@ namespace Architecture2.Common.Web
 
         private static Tuple<HttpStatusCode, string> GetResponseParams(System.Exception exception)
         {
-            if (Extension.IsType(exception, new List<Type> { typeof(ValidationException), typeof(ForeignKeyException<>), typeof(UniqueConstraintException<>) }))
+            if (Extension.IsType(exception, new List<Type> { typeof(ValidationException), typeof(BaseConstraintException<>) }))
                 return new Tuple<HttpStatusCode, string>(HttpStatusCode.BadRequest, exception.Message);
 
             if (Extension.IsType(exception, typeof(NotFoundException<>)))

@@ -1,22 +1,23 @@
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 using Architecture2.Common.Exception.Logic.Base;
 
-namespace Architecture2.Common.Exception.Logic
+namespace Architecture2.Common.Exception.Logic.Constraint.Base
 {
     [Serializable]
-    public class ForeignKeyException<T> : BaseLogicException<T>
+    public abstract class BaseConstraintException<T> : BaseLogicException<T>
     {
         public string Name { get; set; }
-        public ForeignKeyException(string key) : base(key)
+
+        protected BaseConstraintException(string key) : base(key)
         {
         }
 
-        public ForeignKeyException(string key, System.Exception innerException) : base(key, innerException)
+        protected BaseConstraintException(string key, System.Exception innerException) : base(key, innerException)
         {
         }
 
-        public ForeignKeyException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected BaseConstraintException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             Name = info.GetString(nameof(Name));
         }
@@ -35,7 +36,5 @@ namespace Architecture2.Common.Exception.Logic
                 return $"{message}\r\nName: {Name}";
             }
         }
-
-        protected override string Text => "Foreign Key";
     }
 }

@@ -9,55 +9,59 @@ using FluentValidation;
 
 namespace Architecture2.Common.TemplateMethod
 {
-    public abstract class UpdateCommandTemplateHandler<T> : IRequestHandler<T> where T : IdWithRowVersion, IRequest
+    public abstract class UpdateCommandTemplateHandler<TCommand, TUpdateRepository> : IRequestHandler<TCommand> 
+        where TCommand : IdWithRowVersion, IRequest
+        where TUpdateRepository : IUpdateRepository<TCommand>
     {
-        private readonly IValidator<T> _validator;
-        private readonly IUpdateRepository<T> _updateRepository;
+        private readonly IValidator<TCommand> _validator;
+        protected readonly TUpdateRepository UpdateRepository;
 
-        protected UpdateCommandTemplateHandler(IValidator<T> validator, IUpdateRepository<T> updateRepository)
+        protected UpdateCommandTemplateHandler(IValidator<TCommand> validator, TUpdateRepository updateRepository)
         {
             _validator = validator;
-            _updateRepository = updateRepository;
+            UpdateRepository = updateRepository;
         }
-        public void Handle(T message)
+        public void Handle(TCommand message)
         {
             ExecuteValidatate(message);
 
-            ExecuteNotFoundAndConcurrencyAndCan(message);
+            ExecuteNotFoundAndConcurrency(message);
+
+            ExcecuteBeforeExecute(message);
 
             Execute(message);
         }
 
-        protected virtual void ExecuteValidatate(T message)
+        protected virtual void ExecuteValidatate(TCommand message)
         {
             _validator.ValidateAndThrow(message);
         }
 
-        protected virtual void ExecuteNotFoundAndConcurrencyAndCan(T message)
+        protected virtual void ExecuteNotFoundAndConcurrency(TCommand message)
         {
             Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
 
-            var rowVersion = _updateRepository.GetRowVersion(message.Id.Value);
+            var rowVersion = UpdateRepository.GetRowVersion(message.Id.Value);
 
             var idString = message.Id.Value.ToString();
 
             if (rowVersion == null)
-                throw new NotFoundException<T>(idString);
+                throw new NotFoundException<TCommand>(idString);
 
             if (!Extension.AreEqual(rowVersion, message.Version))
-                throw new OptimisticConcurrencyException<T>(idString, rowVersion, message.Version);
-
-            var can = _updateRepository.Can(message);
-
-            if (!can)
-                throw new UniqueConstraintException<T>(idString) { Name = _updateRepository.ConstraintName };
+                throw new OptimisticConcurrencyException<TCommand>(idString, rowVersion, message.Version);
         }
 
-        protected virtual void Execute(T message)
+        protected virtual void ExcecuteBeforeExecute(TCommand message)
+        {
+
+        }
+
+        protected virtual void Execute(TCommand message)
         {
             using (var ts = new TransactionScope())
             {
-                _updateRepository.Execute(message);
+                UpdateRepository.Execute(message);
                 ts.Complete();
             }
         }

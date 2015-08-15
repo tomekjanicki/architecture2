@@ -70,10 +70,11 @@
     <Compile Include="Exception\ExceptionConverter.cs" />
     <Compile Include="Database\Exception\DbException.cs" />
     <Compile Include="Exception\Logic\Base\BaseLogicException.cs" />
-    <Compile Include="Exception\Logic\ForeignKeyException.cs" />
+    <Compile Include="Exception\Logic\Constraint\Base\BaseConstraintException.cs" />
+    <Compile Include="Exception\Logic\Constraint\ForeignKeyException.cs" />
     <Compile Include="Exception\Logic\NotFoundException.cs" />
     <Compile Include="Exception\Logic\OptimisticConcurrencyException.cs" />
-    <Compile Include="Exception\Logic\UniqueConstraintException.cs" />
+    <Compile Include="Exception\Logic\Constraint\UniqueConstraintException.cs" />
     <Compile Include="FluentValidation\AbstractClassValidator.cs" />
     <Compile Include="FluentValidation\Helper.cs" />
     <Compile Include="Handler\Interface\IHandler.cs" />

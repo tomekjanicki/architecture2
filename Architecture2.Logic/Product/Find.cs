@@ -40,10 +40,10 @@ namespace Architecture2.Logic.Product
         }
 
         [RegisterType]
-        public class QueryHandler : PagedQueryTemplateHandler<Query, ProductItem>
+        public class QueryHandler : PagedQueryTemplateHandler<Query, ProductItem, IPagedRepository<ProductItem, Query>>
         {
 
-            public QueryHandler(IPagedRepository<ProductItem, Query> pagedRepository, IValidator<Query> validator) : base(pagedRepository, validator)
+            public QueryHandler(IPagedRepository<ProductItem, Query> pagedRepository, IValidator<Query> validator) : base(validator, pagedRepository)
             {
             }
 
@@ -85,7 +85,7 @@ namespace Architecture2.Logic.Product
                 });
             }
 
-            public Result<ProductItem> GetData(Query query)
+            public Result<ProductItem> Get(Query query)
             {
                 Debug.Assert(query.Skip != null, $"{nameof(query.Skip)} != null");
                 Debug.Assert(query.PageSize != null, $"{nameof(query.PageSize)} != null");

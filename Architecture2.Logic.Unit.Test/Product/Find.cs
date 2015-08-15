@@ -32,7 +32,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _validator.Validate(query).Returns(new ValidationResult());
 
-                _repository.GetData(query).Returns(new Result<Logic.Product.Find.ProductItem>(new Paged<Logic.Product.Find.ProductItem>(0, new List<Logic.Product.Find.ProductItem>())));
+                _repository.Get(query).Returns(new Result<Logic.Product.Find.ProductItem>(new Paged<Logic.Product.Find.ProductItem>(0, new List<Logic.Product.Find.ProductItem>())));
 
                 var result = _sut.Handle(query);
 

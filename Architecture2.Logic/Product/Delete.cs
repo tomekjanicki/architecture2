@@ -1,4 +1,6 @@
-﻿using Architecture2.Common.Database.Interface;
+﻿using System.Diagnostics;
+using Architecture2.Common.Database.Interface;
+using Architecture2.Common.Exception.Logic.Constraint;
 using Architecture2.Common.IoC;
 using Architecture2.Common.SharedStruct;
 using Architecture2.Common.SharedValidator;
@@ -20,15 +22,34 @@ namespace Architecture2.Logic.Product
         }
 
         [RegisterType]
-        public class CommandHandler : DeleteCommandTemplateHandler<Command>
+        public class CommandHandler : DeleteCommandTemplateHandler<Command, IDeleteProductRepository>
         {
-            public CommandHandler(IValidator<Command> validator, IDeleteRepository deleteRepository) : base(validator, deleteRepository)
+            public CommandHandler(IValidator<Command> validator, IDeleteProductRepository deleteProductRepository) : base(validator, deleteProductRepository)
             {
+            }
+
+            protected override void ExcecuteBeforeExecute(Command message)
+            {
+                Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
+
+                var idString = message.Id.Value.ToString();
+
+                var can = DeleteRepository.Can(message.Id.Value);
+
+                if (!can)
+                    throw new ForeignKeyException<Command>(idString) { Name = DeleteRepository.ConstraintName };
             }
         }
 
+        public interface IDeleteProductRepository : IDeleteRepository
+        {
+            bool Can(int id);
+
+            string ConstraintName { get; }
+        }
+
         [RegisterType]
-        public class DeleteRepository : IDeleteRepository
+        public class DeleteRepository : IDeleteProductRepository
         {
             private readonly ICommand _command;
 
