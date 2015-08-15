@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="Mail\Send.cs" />
     <Compile Include="Product\Delete.cs" />
-    <Compile Include="Product\Find.cs" />
+    <Compile Include="Product\FindPaged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
