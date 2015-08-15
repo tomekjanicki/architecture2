@@ -2,13 +2,14 @@ using Architecture2.Common.Handler.Interface;
 using Architecture2.Common.SharedStruct.RequestParam;
 using Architecture2.Common.SharedStruct.ResponseParam;
 using Architecture2.Common.TemplateMethod.Interface.Query;
+using Architecture2.Common.Tool;
 using FluentValidation;
 
 namespace Architecture2.Common.TemplateMethod.Query
 {
     public abstract class CollectionQueryTemplateHandler<TQuery, TItem, TCollectionRepository> : IRequestHandler<TQuery, CollectionResult<TItem>>
         where TQuery : Sort<TItem>
-        where TCollectionRepository : ICollectionRepository<TItem, TQuery>
+        where TCollectionRepository : class, ICollectionRepository<TItem, TQuery>
 
     {
         protected readonly TCollectionRepository CollectionRepository;
@@ -16,6 +17,7 @@ namespace Architecture2.Common.TemplateMethod.Query
 
         protected CollectionQueryTemplateHandler(IValidator<TQuery> validator, TCollectionRepository collectionRepository)
         {
+            Guard.NotNull(collectionRepository, nameof(collectionRepository));
             CollectionRepository = collectionRepository;
             _validator = validator;
         }
@@ -26,7 +28,7 @@ namespace Architecture2.Common.TemplateMethod.Query
 
             ExecuteBeforeExecuteGet(message);
 
-            return ExecuteGet(message);
+            return ExecuteFetch(message);
         }
 
         protected virtual void ExecuteValidate(TQuery message)
@@ -38,9 +40,9 @@ namespace Architecture2.Common.TemplateMethod.Query
         {
         }
 
-        protected virtual CollectionResult<TItem> ExecuteGet(TQuery message)
+        protected virtual CollectionResult<TItem> ExecuteFetch(TQuery message)
         {
-            return CollectionRepository.Get(message);
+            return CollectionRepository.Fetch(message);
         }
     }
 }

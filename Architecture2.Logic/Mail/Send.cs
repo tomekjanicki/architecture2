@@ -12,7 +12,7 @@ using log4net;
 
 namespace Architecture2.Logic.Mail
 {
-    public class Send
+    public static class Send
     {
         public class Result
         {

@@ -11,7 +11,7 @@ using Dapper;
 
 namespace Architecture2.Logic.Product
 {
-    public class FindCollection
+    public static class FindCollection
     {
         public class Query : Sort<ProductItem>
         {
@@ -74,7 +74,7 @@ namespace Architecture2.Logic.Product
                 });
             }
 
-            public CollectionResult<ProductItem> Get(Query query)
+            public CollectionResult<ProductItem> Fetch(Query query)
             {
                 var whereFragment = GetWhereFragment(query.Code, query.Name);
                 var selectQuery = string.Format(SelectProductQuery, whereFragment.Query, GetTranslatedSort(query.SortExp));

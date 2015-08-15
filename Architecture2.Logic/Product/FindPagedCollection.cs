@@ -16,7 +16,7 @@ using FluentValidation;
 
 namespace Architecture2.Logic.Product
 {
-    public class FindPagedCollection
+    public static class FindPagedCollection
     {
         public class Query : SortPageSizeSkip<ProductItem>
         {
@@ -87,7 +87,7 @@ namespace Architecture2.Logic.Product
                 });
             }
 
-            public PagedCollectionResult<ProductItem> Get(Query query)
+            public PagedCollectionResult<ProductItem> Fetch(Query query)
             {
                 Debug.Assert(query.Skip != null, $"{nameof(query.Skip)} != null");
                 Debug.Assert(query.PageSize != null, $"{nameof(query.PageSize)} != null");

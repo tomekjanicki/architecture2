@@ -5,6 +5,6 @@ namespace Architecture2.Common.TemplateMethod.Interface.Query
 {
     public interface IPagedCollectionRepository<TItem, in TParam> where TParam : SortPageSizeSkip<TItem>
     {
-        PagedCollectionResult<TItem> Get(TParam query);
+        PagedCollectionResult<TItem> Fetch(TParam query);
     }
 }

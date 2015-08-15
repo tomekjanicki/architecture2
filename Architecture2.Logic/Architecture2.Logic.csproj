@@ -63,6 +63,7 @@
     <Compile Include="Product\Delete.cs" />
     <Compile Include="Product\FindPagedCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\FindByLogin.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Architecture2.Common\Architecture2.Common.csproj">

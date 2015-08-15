@@ -10,7 +10,7 @@ using FluentValidation;
 
 namespace Architecture2.Logic.Product
 {
-    public class Delete
+    public static class Delete
     {
         public class Command : IdWithRowVersion
         {

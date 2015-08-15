@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Architecture2.Logic.Unit.Test.Mail
 {
-    public class Send
+    public static class Send
     {
         public class CommandHandlerTest : BaseTest
         {

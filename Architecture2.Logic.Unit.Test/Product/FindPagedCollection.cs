@@ -11,7 +11,7 @@ using Helper = Architecture2.Common.FluentValidation.Helper;
 
 namespace Architecture2.Logic.Unit.Test.Product
 {
-    public class FindPagedCollection
+    public static class FindPagedCollection
     {
         public class QueryHandlerTest : BaseTest
         {
@@ -34,7 +34,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _validator.Validate(query).Returns(new ValidationResult());
 
-                _collectionRepository.Get(query).Returns(new PagedCollectionResult<Logic.Product.FindPagedCollection.ProductItem>(new Paged<Logic.Product.FindPagedCollection.ProductItem>(0, new List<Logic.Product.FindPagedCollection.ProductItem>())));
+                _collectionRepository.Fetch(query).Returns(new PagedCollectionResult<Logic.Product.FindPagedCollection.ProductItem>(new Paged<Logic.Product.FindPagedCollection.ProductItem>(0, new List<Logic.Product.FindPagedCollection.ProductItem>())));
 
                 var result = _sut.Handle(query);
 

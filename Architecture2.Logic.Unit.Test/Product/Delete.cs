@@ -10,7 +10,7 @@ using Helper = Architecture2.Common.FluentValidation.Helper;
 
 namespace Architecture2.Logic.Unit.Test.Product
 {
-    public class Delete
+    public static class Delete
     {
         public class CommandHandlerTest : BaseTest
         {
