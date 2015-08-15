@@ -100,6 +100,7 @@
     <Compile Include="SharedStruct\PageAndSortCriteria.cs" />
     <Compile Include="SharedStruct\Paged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SharedStruct\Result.cs" />
     <Compile Include="SharedStruct\Sort.cs" />
     <Compile Include="SharedValidator\IdWithRowVersionValidator.cs" />
     <Compile Include="SharedValidator\SortPageSizeSkipValidator.cs" />
@@ -108,10 +109,12 @@
     <Compile Include="TemplateMethod\Interface\ICollectionRepository.cs" />
     <Compile Include="TemplateMethod\Interface\IDeleteRepository.cs" />
     <Compile Include="TemplateMethod\Interface\IPagedCollectionRepository.cs" />
+    <Compile Include="TemplateMethod\Interface\IRepository.cs" />
     <Compile Include="TemplateMethod\Interface\IUpdateRepository.cs" />
     <Compile Include="TemplateMethod\PagedCollectionQueryTemplateHandler.cs" />
     <Compile Include="SharedStruct\PagedCollectionResult.cs" />
     <Compile Include="SharedStruct\SortPageSizeSkip.cs" />
+    <Compile Include="TemplateMethod\QueryTemplateHandler.cs" />
     <Compile Include="TemplateMethod\UpdateCommandTemplateHandler.cs" />
     <Compile Include="TemplateMethod\CollectionQueryTemplateHandler.cs" />
     <Compile Include="Tool\Extension.cs" />
