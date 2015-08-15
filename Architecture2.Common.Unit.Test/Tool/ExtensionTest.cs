@@ -1,8 +1,8 @@
 ﻿using System;
 using Architecture2.Common.Exception.Logic;
 using Architecture2.Common.Exception.Logic.Base;
-using Architecture2.Common.Tool;
 using Architecture2.Common.Test;
+using Architecture2.Common.Tool;
 using NUnit.Framework;
 
 namespace Architecture2.Common.Unit.Test.Tool

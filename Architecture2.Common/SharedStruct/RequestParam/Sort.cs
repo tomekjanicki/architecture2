@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Architecture2.Common.Handler.Interface;
+﻿using Architecture2.Common.Handler.Interface;
 using Architecture2.Common.SharedStruct.ResponseParam;
 
 namespace Architecture2.Common.SharedStruct.RequestParam

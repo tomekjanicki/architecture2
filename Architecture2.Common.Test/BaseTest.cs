@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Architecture2.Common.Log4Net;
 using log4net;
 using NUnit.Framework;
-using Architecture2.Common.Log4Net;
 
 namespace Architecture2.Common.Test
 {
