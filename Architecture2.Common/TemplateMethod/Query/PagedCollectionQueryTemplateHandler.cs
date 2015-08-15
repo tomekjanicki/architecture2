@@ -31,7 +31,7 @@ namespace Architecture2.Common.TemplateMethod.Query
 
         protected virtual void ExecuteValidate(TQuery message)
         {
-            _validator.ValidateAndThrow(message);
+            _validator?.ValidateAndThrow(message);
         }
 
         protected virtual void ExecuteBeforeExecuteGet(TQuery message)

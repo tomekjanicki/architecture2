@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="DependencyModule.cs" />
     <Compile Include="Mail\Send.cs" />
+    <Compile Include="Product\FindCollection.cs" />
     <Compile Include="Product\Delete.cs" />
     <Compile Include="Product\FindPagedCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

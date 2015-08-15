@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Architecture2.Common.Database;
 using Architecture2.Common.Database.Interface;
 using Architecture2.Common.IoC;
-using Architecture2.Common.SharedStruct;
 using Architecture2.Common.SharedStruct.RequestParam;
 using Architecture2.Common.SharedStruct.ResponseParam;
-using Architecture2.Common.SharedValidator;
 using Architecture2.Common.TemplateMethod.Interface.Query;
 using Architecture2.Common.TemplateMethod.Query;
 using Dapper;
@@ -16,18 +12,12 @@ using FluentValidation;
 
 namespace Architecture2.Logic.Product
 {
-    public class FindPagedCollection
+    public class FindCollection
     {
-        public class Query : SortPageSizeSkip<ProductItem>
+        public class Query : Sort<ProductItem>
         {
             public string Name { get; set; }
             public string Code { get; set; }
-        }
-
-        [RegisterType]
-        public class QueryValidator : SortPageSizeSkipValidator<ProductItem>
-        {
-
         }
 
         public class ProductItem
@@ -42,24 +32,22 @@ namespace Architecture2.Logic.Product
         }
 
         [RegisterType]
-        public class QueryHandler : PagedCollectionQueryTemplateHandler<Query, ProductItem, IPagedCollectionRepository<ProductItem, Query>>
+        public class QueryHandler : CollectionQueryTemplateHandler<Query, ProductItem, ICollectionRepository<ProductItem, Query>>
         {
 
-            public QueryHandler(IPagedCollectionRepository<ProductItem, Query> pagedCollectionRepository, IValidator<Query> validator) : base(validator, pagedCollectionRepository)
+            public QueryHandler(ICollectionRepository<ProductItem, Query> collectionRepository, IValidator<Query> validator) : base(validator, collectionRepository)
             {
             }
-
         }
 
         [RegisterType]
-        public class ProductItemPagedCollectionRepository : IPagedCollectionRepository<ProductItem, Query>
+        public class ProductItemCollectionRepository : ICollectionRepository<ProductItem, Query>
         {
             private const string SelectProductQuery = @"SELECT ID, CODE, NAME, PRICE, VERSION, CASE WHEN ID < 20 THEN GETDATE() ELSE NULL END DATE, CASE WHEN O.PRODUCTID IS NULL THEN 1 ELSE 0 END CANDELETE FROM DBO.PRODUCTS P LEFT JOIN (SELECT DISTINCT PRODUCTID FROM DBO.ORDERSDETAILS) O ON P.ID = O.PRODUCTID {0} {1}";
-            private const string CountProductQuery = @"SELECT COUNT(*) FROM DBO.PRODUCTS {0}";
 
             private readonly ICommand _command;
 
-            public ProductItemPagedCollectionRepository(ICommand command)
+            public ProductItemCollectionRepository(ICommand command)
             {
                 _command = command;
             }
@@ -87,21 +75,12 @@ namespace Architecture2.Logic.Product
                 });
             }
 
-            public PagedCollectionResult<ProductItem> Get(Query query)
+            public CollectionResult<ProductItem> Get(Query query)
             {
-                Debug.Assert(query.Skip != null, $"{nameof(query.Skip)} != null");
-                Debug.Assert(query.PageSize != null, $"{nameof(query.PageSize)} != null");
-
                 var whereFragment = GetWhereFragment(query.Code, query.Name);
-                var pagedFragment = CommandHelper.GetPagedFragment(new Page(query.PageSize.Value, query.Skip.Value), GetTranslatedSort(query.SortExp));
-
-                var countQuery = string.Format(CountProductQuery, whereFragment.Query);
-                var selectQuery = string.Format(SelectProductQuery, whereFragment.Query, pagedFragment.Query);
-                var count = _command.Query<int>(countQuery, whereFragment.Parameters).Single();
-                whereFragment.Parameters.AddDynamicParams(pagedFragment.Parameters);
+                var selectQuery = string.Format(SelectProductQuery, whereFragment.Query, GetTranslatedSort(query.SortExp));
                 var select = _command.Query<ProductItem>(selectQuery, whereFragment.Parameters);
-
-                return new PagedCollectionResult<ProductItem>(new Paged<ProductItem>(count, select));
+                return new CollectionResult<ProductItem>(select);
             }
         }
 
