@@ -13,6 +13,10 @@ namespace Architecture2.Common.TemplateMethod.Query
         protected readonly TRepository Repository;
         private readonly IValidator<TQuery> _validator;
 
+        protected QueryTemplateHandler(TRepository repository) : this(null, repository)
+        {
+        }
+
         protected QueryTemplateHandler(IValidator<TQuery> validator, TRepository repository)
         {
             Repository = repository;
@@ -30,7 +34,7 @@ namespace Architecture2.Common.TemplateMethod.Query
 
         protected virtual void ExecuteValidate(TQuery message)
         {
-            _validator.ValidateAndThrow(message);
+            _validator?.ValidateAndThrow(message);
         }
 
         protected virtual void ExecuteBeforeExecuteGet(TQuery message)
