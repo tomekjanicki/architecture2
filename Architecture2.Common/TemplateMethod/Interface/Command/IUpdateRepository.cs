@@ -1,4 +1,4 @@
-﻿namespace Architecture2.Common.TemplateMethod.Interface
+﻿namespace Architecture2.Common.TemplateMethod.Interface.Command
 {
     public interface IUpdateRepository<in T>
     {

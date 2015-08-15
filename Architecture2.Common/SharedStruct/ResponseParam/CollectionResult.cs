@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Architecture2.Common.SharedStruct
+namespace Architecture2.Common.SharedStruct.ResponseParam
 {
     public class CollectionResult<TItem>
     {

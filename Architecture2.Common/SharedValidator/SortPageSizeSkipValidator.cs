@@ -1,5 +1,5 @@
 using Architecture2.Common.FluentValidation;
-using Architecture2.Common.SharedStruct;
+using Architecture2.Common.SharedStruct.RequestParam;
 using FluentValidation;
 
 namespace Architecture2.Common.SharedValidator

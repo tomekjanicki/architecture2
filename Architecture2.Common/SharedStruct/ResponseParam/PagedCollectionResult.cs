@@ -1,4 +1,4 @@
-namespace Architecture2.Common.SharedStruct
+namespace Architecture2.Common.SharedStruct.ResponseParam
 {
     public class PagedCollectionResult<TItem>
     {

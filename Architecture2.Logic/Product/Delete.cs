@@ -4,8 +4,8 @@ using Architecture2.Common.Exception.Logic.Constraint;
 using Architecture2.Common.IoC;
 using Architecture2.Common.SharedStruct;
 using Architecture2.Common.SharedValidator;
-using Architecture2.Common.TemplateMethod;
-using Architecture2.Common.TemplateMethod.Interface;
+using Architecture2.Common.TemplateMethod.Command;
+using Architecture2.Common.TemplateMethod.Interface.Command;
 using FluentValidation;
 
 namespace Architecture2.Logic.Product

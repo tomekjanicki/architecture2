@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 using Architecture2.Common.Handler.Interface;
-using Architecture2.Common.SharedStruct;
+using Architecture2.Common.SharedStruct.ResponseParam;
 using Architecture2.Logic.Product;
 
 namespace Architecture2.Web.Controller

@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using Architecture2.Common.SharedStruct;
-using Architecture2.Common.TemplateMethod.Interface;
+using Architecture2.Common.SharedStruct.ResponseParam;
+using Architecture2.Common.TemplateMethod.Interface.Query;
 using Architecture2.Common.Test;
 using FluentValidation;
 using FluentValidation.Results;
 using NSubstitute;
 using NUnit.Framework;
+using Helper = Architecture2.Common.FluentValidation.Helper;
 
 namespace Architecture2.Logic.Unit.Test.Product
 {
@@ -44,7 +46,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             {
                 var query = new Logic.Product.Find.Query();
 
-                _validator.Validate(query).Returns(Common.FluentValidation.Helper.GetErrorValidationResult());
+                _validator.Validate(query).Returns(Helper.GetErrorValidationResult());
 
                 Assert.Catch<ValidationException>(() => _sut.Handle(query));
             }
@@ -84,7 +86,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 var result = _sut.Validate(query);
 
-                Assert.That(Helper.HasError(result, nameof(Logic.Product.Find.Query.PageSize)));
+                Assert.That(Common.Test.Helper.HasError(result, nameof(Logic.Product.Find.Query.PageSize)));
             }
 
             [Test]
@@ -94,7 +96,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 var result = _sut.Validate(query);
 
-                Assert.That(Helper.HasError(result, nameof(Logic.Product.Find.Query.Skip)));
+                Assert.That(Common.Test.Helper.HasError(result, nameof(Logic.Product.Find.Query.Skip)));
             }
 
             [Test]
@@ -104,7 +106,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 var result = _sut.Validate(query);
 
-                Assert.That(Helper.HasError(result, nameof(Logic.Product.Find.Query.PageSize)));
+                Assert.That(Common.Test.Helper.HasError(result, nameof(Logic.Product.Find.Query.PageSize)));
             }
 
             [Test]
@@ -114,7 +116,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 var result = _sut.Validate(query);
 
-                Assert.That(Helper.HasError(result, nameof(Logic.Product.Find.Query.Skip)));
+                Assert.That(Common.Test.Helper.HasError(result, nameof(Logic.Product.Find.Query.Skip)));
             }
 
             [Test]

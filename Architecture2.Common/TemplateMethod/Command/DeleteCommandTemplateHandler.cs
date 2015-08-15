@@ -1,26 +1,27 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Transactions;
 using Architecture2.Common.Exception.Logic;
 using Architecture2.Common.Handler.Interface;
 using Architecture2.Common.SharedStruct;
-using Architecture2.Common.TemplateMethod.Interface;
+using Architecture2.Common.TemplateMethod.Interface.Command;
 using Architecture2.Common.Tool;
 using FluentValidation;
 
-namespace Architecture2.Common.TemplateMethod
+namespace Architecture2.Common.TemplateMethod.Command
 {
-    public abstract class UpdateCommandTemplateHandler<TCommand, TUpdateRepository> : IRequestHandler<TCommand> 
+    public abstract class DeleteCommandTemplateHandler<TCommand, TDeleteRepository> : IRequestHandler<TCommand> 
         where TCommand : IdWithRowVersion, IRequest
-        where TUpdateRepository : IUpdateRepository<TCommand>
+        where TDeleteRepository : IDeleteRepository
     {
         private readonly IValidator<TCommand> _validator;
-        protected readonly TUpdateRepository UpdateRepository;
+        protected readonly TDeleteRepository DeleteRepository;
 
-        protected UpdateCommandTemplateHandler(IValidator<TCommand> validator, TUpdateRepository updateRepository)
+        protected DeleteCommandTemplateHandler(IValidator<TCommand> validator, TDeleteRepository deleteRepository)
         {
             _validator = validator;
-            UpdateRepository = updateRepository;
+            DeleteRepository = deleteRepository;
         }
+
         public void Handle(TCommand message)
         {
             ExecuteValidatate(message);
@@ -41,7 +42,7 @@ namespace Architecture2.Common.TemplateMethod
         {
             Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
 
-            var rowVersion = UpdateRepository.GetRowVersion(message.Id.Value);
+            var rowVersion = DeleteRepository.GetRowVersion(message.Id.Value);
 
             var idString = message.Id.Value.ToString();
 
@@ -54,17 +55,17 @@ namespace Architecture2.Common.TemplateMethod
 
         protected virtual void ExcecuteBeforeExecute(TCommand message)
         {
-
+            
         }
-
         protected virtual void Execute(TCommand message)
         {
+            Debug.Assert(message.Id != null, $"{nameof(message.Id)} != null");
+
             using (var ts = new TransactionScope())
             {
-                UpdateRepository.Execute(message);
+                DeleteRepository.Execute(message.Id.Value);
                 ts.Complete();
             }
         }
-
     }
 }

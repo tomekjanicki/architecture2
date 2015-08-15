@@ -1,7 +1,7 @@
-﻿
-using Architecture2.Common.Handler.Interface;
+﻿using Architecture2.Common.Handler.Interface;
+using Architecture2.Common.SharedStruct.ResponseParam;
 
-namespace Architecture2.Common.SharedStruct
+namespace Architecture2.Common.SharedStruct.RequestParam
 {
     public class SortPageSizeSkip<TItem> : IRequest<PagedCollectionResult<TItem>>
     {

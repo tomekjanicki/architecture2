@@ -1,9 +1,9 @@
 using Architecture2.Common.Handler.Interface;
-using Architecture2.Common.SharedStruct;
-using Architecture2.Common.TemplateMethod.Interface;
+using Architecture2.Common.SharedStruct.ResponseParam;
+using Architecture2.Common.TemplateMethod.Interface.Query;
 using FluentValidation;
 
-namespace Architecture2.Common.TemplateMethod
+namespace Architecture2.Common.TemplateMethod.Query
 {
     public abstract class QueryTemplateHandler<TQuery, TItem, TRepository> : IRequestHandler<TQuery, Result<TItem>>
         where TQuery : IRequest<Result<TItem>>

@@ -6,9 +6,11 @@ using Architecture2.Common.Database;
 using Architecture2.Common.Database.Interface;
 using Architecture2.Common.IoC;
 using Architecture2.Common.SharedStruct;
+using Architecture2.Common.SharedStruct.RequestParam;
+using Architecture2.Common.SharedStruct.ResponseParam;
 using Architecture2.Common.SharedValidator;
-using Architecture2.Common.TemplateMethod;
-using Architecture2.Common.TemplateMethod.Interface;
+using Architecture2.Common.TemplateMethod.Interface.Query;
+using Architecture2.Common.TemplateMethod.Query;
 using Dapper;
 using FluentValidation;
 

@@ -1,9 +1,10 @@
 using Architecture2.Common.Handler.Interface;
-using Architecture2.Common.SharedStruct;
-using Architecture2.Common.TemplateMethod.Interface;
+using Architecture2.Common.SharedStruct.RequestParam;
+using Architecture2.Common.SharedStruct.ResponseParam;
+using Architecture2.Common.TemplateMethod.Interface.Query;
 using FluentValidation;
 
-namespace Architecture2.Common.TemplateMethod
+namespace Architecture2.Common.TemplateMethod.Query
 {
     public abstract class CollectionQueryTemplateHandler<TQuery, TItem, TCollectionRepository> : IRequestHandler<TQuery, CollectionResult<TItem>>
         where TQuery : Sort<TItem>
