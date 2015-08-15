@@ -5,8 +5,8 @@ using FluentValidation;
 
 namespace Architecture2.Common.TemplateMethod.Command
 {
-    public abstract class InsertCommandTemplateHandler<TCommand, TInsertRepository> : IRequestHandler<TCommand>
-        where TCommand : IRequest
+    public abstract class InsertCommandTemplateHandler<TCommand, TInsertRepository> : IRequestHandler<TCommand, int>
+        where TCommand : IRequest<int>
         where TInsertRepository : IInsertRepository<TCommand>
     {
         private readonly IValidator<TCommand> _validator;
@@ -17,13 +17,13 @@ namespace Architecture2.Common.TemplateMethod.Command
             _validator = validator;
             InsertRepository = insertRepository;
         }
-        public void Handle(TCommand message)
+        public int Handle(TCommand message)
         {
             ExecuteValidatate(message);
 
             ExcecuteBeforeExecute(message);
 
-            Execute(message);
+            return Execute(message);
         }
 
         protected virtual void ExecuteValidatate(TCommand message)
@@ -36,13 +36,15 @@ namespace Architecture2.Common.TemplateMethod.Command
 
         }
 
-        protected virtual void Execute(TCommand message)
+        protected virtual int Execute(TCommand message)
         {
+            int result;
             using (var ts = new TransactionScope())
             {
-                InsertRepository.Execute(message);
+                result = InsertRepository.Execute(message);
                 ts.Complete();
             }
+            return result;
         }
 
     }

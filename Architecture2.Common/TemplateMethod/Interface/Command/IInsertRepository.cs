@@ -2,6 +2,6 @@
 {
     public interface IInsertRepository<in T>
     {
-        void Execute(T entity);
+        int Execute(T entity);
     }
 }
