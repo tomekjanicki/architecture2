@@ -106,6 +106,8 @@
     <Compile Include="SharedValidator\SortPageSizeSkipValidator.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TemplateMethod\Command\DeleteCommandTemplateHandler.cs" />
+    <Compile Include="TemplateMethod\Command\InsertCommandTemplateHandler.cs" />
+    <Compile Include="TemplateMethod\Interface\Command\IInsertRepository.cs" />
     <Compile Include="TemplateMethod\Interface\Query\ICollectionRepository.cs" />
     <Compile Include="TemplateMethod\Interface\Command\IDeleteRepository.cs" />
     <Compile Include="TemplateMethod\Interface\Query\IPagedCollectionRepository.cs" />
