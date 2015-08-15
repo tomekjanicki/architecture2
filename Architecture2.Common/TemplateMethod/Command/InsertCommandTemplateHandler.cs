@@ -1,6 +1,5 @@
 using System.Transactions;
 using Architecture2.Common.Handler.Interface;
-using Architecture2.Common.SharedStruct;
 using Architecture2.Common.TemplateMethod.Interface.Command;
 using FluentValidation;
 
