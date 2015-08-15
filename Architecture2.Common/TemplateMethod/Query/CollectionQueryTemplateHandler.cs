@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Architecture2.Common.Handler.Interface;
 using Architecture2.Common.SharedStruct.RequestParam;
 using Architecture2.Common.SharedStruct.ResponseParam;
@@ -7,8 +8,9 @@ using FluentValidation;
 namespace Architecture2.Common.TemplateMethod.Query
 {
     public abstract class CollectionQueryTemplateHandler<TQuery, TItem, TCollectionRepository> : IRequestHandler<TQuery, CollectionResult<TItem>>
-        where TQuery : Sort<TItem>
-        where TCollectionRepository : ICollectionRepository<TItem, TQuery>
+        where TQuery : Sort<TItem> 
+        where TCollectionRepository : ICollectionRepository<TItem, CollectionResult<TItem>, TQuery>
+        where TItem : IReadOnlyCollection<TItem>
 
     {
         protected readonly TCollectionRepository CollectionRepository;

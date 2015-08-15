@@ -2,9 +2,10 @@ using System.Collections.Generic;
 
 namespace Architecture2.Common.SharedStruct.ResponseParam
 {
-    public class CollectionResult<TItem> : Result<IReadOnlyCollection<TItem>>
+    public class CollectionResult<TItem> : Result<TItem> 
+        where TItem : IReadOnlyCollection<TItem>
     {
-        public CollectionResult(IReadOnlyCollection<TItem> results): base(results)
+        public CollectionResult(TItem results): base(results)
         {
         }
 
