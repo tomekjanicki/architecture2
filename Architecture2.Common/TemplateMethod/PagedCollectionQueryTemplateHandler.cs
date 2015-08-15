@@ -5,21 +5,21 @@ using FluentValidation;
 
 namespace Architecture2.Common.TemplateMethod
 {
-    public abstract class PagedQueryTemplateHandler<TQuery, TItem, TPagedRepository> : IRequestHandler<TQuery, Result<TItem>> 
+    public abstract class PagedCollectionQueryTemplateHandler<TQuery, TItem, TPagedCollectionRepository> : IRequestHandler<TQuery, PagedCollectionResult<TItem>> 
         where TQuery : SortPageSizeSkip<TItem>
-        where TPagedRepository : IPagedRepository<TItem, TQuery>
+        where TPagedCollectionRepository : IPagedCollectionRepository<TItem, TQuery>
 
     {
-        protected readonly TPagedRepository PagedRepository;
+        protected readonly TPagedCollectionRepository PagedCollectionRepository;
         private readonly IValidator<TQuery> _validator;
 
-        protected PagedQueryTemplateHandler(IValidator<TQuery> validator, TPagedRepository pagedRepository)
+        protected PagedCollectionQueryTemplateHandler(IValidator<TQuery> validator, TPagedCollectionRepository pagedCollectionRepository)
         {
-            PagedRepository = pagedRepository;
+            PagedCollectionRepository = pagedCollectionRepository;
             _validator = validator;
         }
 
-        public Result<TItem> Handle(TQuery message)
+        public PagedCollectionResult<TItem> Handle(TQuery message)
         {
             ExecuteValidate(message);
 
@@ -37,9 +37,9 @@ namespace Architecture2.Common.TemplateMethod
         {
         }
 
-        protected virtual Result<TItem> ExecuteGet(TQuery message)
+        protected virtual PagedCollectionResult<TItem> ExecuteGet(TQuery message)
         {
-            return PagedRepository.Get(message);
+            return PagedCollectionRepository.Get(message);
         }
     }
 }

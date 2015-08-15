@@ -40,24 +40,24 @@ namespace Architecture2.Logic.Product
         }
 
         [RegisterType]
-        public class QueryHandler : PagedQueryTemplateHandler<Query, ProductItem, IPagedRepository<ProductItem, Query>>
+        public class QueryHandler : PagedCollectionQueryTemplateHandler<Query, ProductItem, IPagedCollectionRepository<ProductItem, Query>>
         {
 
-            public QueryHandler(IPagedRepository<ProductItem, Query> pagedRepository, IValidator<Query> validator) : base(validator, pagedRepository)
+            public QueryHandler(IPagedCollectionRepository<ProductItem, Query> pagedCollectionRepository, IValidator<Query> validator) : base(validator, pagedCollectionRepository)
             {
             }
 
         }
 
         [RegisterType]
-        public class Repository : IPagedRepository<ProductItem, Query>
+        public class ProductItemCollectionRepository : IPagedCollectionRepository<ProductItem, Query>
         {
             private const string SelectProductQuery = @"SELECT ID, CODE, NAME, PRICE, VERSION, CASE WHEN ID < 20 THEN GETDATE() ELSE NULL END DATE, CASE WHEN O.PRODUCTID IS NULL THEN 1 ELSE 0 END CANDELETE FROM DBO.PRODUCTS P LEFT JOIN (SELECT DISTINCT PRODUCTID FROM DBO.ORDERSDETAILS) O ON P.ID = O.PRODUCTID {0} {1}";
             private const string CountProductQuery = @"SELECT COUNT(*) FROM DBO.PRODUCTS {0}";
 
             private readonly ICommand _command;
 
-            public Repository(ICommand command)
+            public ProductItemCollectionRepository(ICommand command)
             {
                 _command = command;
             }
@@ -85,13 +85,13 @@ namespace Architecture2.Logic.Product
                 });
             }
 
-            public Result<ProductItem> Get(Query query)
+            public PagedCollectionResult<ProductItem> Get(Query query)
             {
                 Debug.Assert(query.Skip != null, $"{nameof(query.Skip)} != null");
                 Debug.Assert(query.PageSize != null, $"{nameof(query.PageSize)} != null");
 
                 var whereFragment = GetWhereFragment(query.Code, query.Name);
-                var pagedFragment = CommandHelper.GetPagedFragment(new Page(query.PageSize.Value, query.Skip.Value), GetTranslatedSort(query.Sort));
+                var pagedFragment = CommandHelper.GetPagedFragment(new Page(query.PageSize.Value, query.Skip.Value), GetTranslatedSort(query.SortExp));
 
                 var countQuery = string.Format(CountProductQuery, whereFragment.Query);
                 var selectQuery = string.Format(SelectProductQuery, whereFragment.Query, pagedFragment.Query);
@@ -99,7 +99,7 @@ namespace Architecture2.Logic.Product
                 whereFragment.Parameters.AddDynamicParams(pagedFragment.Parameters);
                 var select = _command.Query<ProductItem>(selectQuery, whereFragment.Parameters);
 
-                return new Result<ProductItem>(new Paged<ProductItem>(count, select));
+                return new PagedCollectionResult<ProductItem>(new Paged<ProductItem>(count, select));
             }
         }
 

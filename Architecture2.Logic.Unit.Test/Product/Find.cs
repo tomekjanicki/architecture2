@@ -14,15 +14,15 @@ namespace Architecture2.Logic.Unit.Test.Product
         public class QueryHandlerTest : BaseTest
         {
             private Logic.Product.Find.QueryHandler _sut;
-            private IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Query> _repository;
+            private IPagedCollectionRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Query> _collectionRepository;
             private IValidator<Logic.Product.Find.Query> _validator;
 
             public override void SetUp()
             {
                 base.SetUp();
-                _repository = Substitute.For<IPagedRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Query>>();
+                _collectionRepository = Substitute.For<IPagedCollectionRepository<Logic.Product.Find.ProductItem, Logic.Product.Find.Query>>();
                 _validator = Substitute.For<IValidator<Logic.Product.Find.Query>>();
-                _sut = new Logic.Product.Find.QueryHandler(_repository, _validator);
+                _sut = new Logic.Product.Find.QueryHandler(_collectionRepository, _validator);
             }
 
             [Test]
@@ -32,7 +32,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
                 _validator.Validate(query).Returns(new ValidationResult());
 
-                _repository.Get(query).Returns(new Result<Logic.Product.Find.ProductItem>(new Paged<Logic.Product.Find.ProductItem>(0, new List<Logic.Product.Find.ProductItem>())));
+                _collectionRepository.Get(query).Returns(new PagedCollectionResult<Logic.Product.Find.ProductItem>(new Paged<Logic.Product.Find.ProductItem>(0, new List<Logic.Product.Find.ProductItem>())));
 
                 var result = _sut.Handle(query);
 

@@ -1,8 +1,8 @@
 namespace Architecture2.Common.SharedStruct
 {
-    public class Result<TItem>
+    public class PagedCollectionResult<TItem>
     {
-        public Result(Paged<TItem> results)
+        public PagedCollectionResult(Paged<TItem> results)
         {
             Results = results;
         }
