@@ -1,3 +1,5 @@
+using Architecture2.Common.Handler.Interface;
+
 namespace Architecture2.Common.SharedStruct.ResponseParam
 {
     public class Result<TItem>
