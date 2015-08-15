@@ -11,13 +11,15 @@ namespace Architecture2.Common.TemplateMethod.Command
 {
     public abstract class DeleteCommandTemplateHandler<TCommand, TDeleteRepository> : IRequestHandler<TCommand> 
         where TCommand : IdWithRowVersion, IRequest
-        where TDeleteRepository : IDeleteRepository
+        where TDeleteRepository : class, IDeleteRepository
     {
         private readonly IValidator<TCommand> _validator;
         protected readonly TDeleteRepository DeleteRepository;
 
         protected DeleteCommandTemplateHandler(IValidator<TCommand> validator, TDeleteRepository deleteRepository)
         {
+            Guard.NotNull(DeleteRepository, nameof(DeleteRepository));
+            Guard.NotNull(validator, nameof(validator));
             _validator = validator;
             DeleteRepository = deleteRepository;
         }

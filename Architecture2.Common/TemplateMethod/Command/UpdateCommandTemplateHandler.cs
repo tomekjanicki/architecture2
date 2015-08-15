@@ -11,13 +11,15 @@ namespace Architecture2.Common.TemplateMethod.Command
 {
     public abstract class UpdateCommandTemplateHandler<TCommand, TUpdateRepository> : IRequestHandler<TCommand> 
         where TCommand : IdWithRowVersion, IRequest
-        where TUpdateRepository : IUpdateRepository<TCommand>
+        where TUpdateRepository : class, IUpdateRepository<TCommand>
     {
         private readonly IValidator<TCommand> _validator;
         protected readonly TUpdateRepository UpdateRepository;
 
         protected UpdateCommandTemplateHandler(IValidator<TCommand> validator, TUpdateRepository updateRepository)
         {
+            Guard.NotNull(UpdateRepository, nameof(UpdateRepository));
+            Guard.NotNull(validator, nameof(validator));
             _validator = validator;
             UpdateRepository = updateRepository;
         }
