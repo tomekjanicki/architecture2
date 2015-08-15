@@ -8,7 +8,6 @@ using Architecture2.Common.SharedStruct.ResponseParam;
 using Architecture2.Common.TemplateMethod.Interface.Query;
 using Architecture2.Common.TemplateMethod.Query;
 using Dapper;
-using FluentValidation;
 
 namespace Architecture2.Logic.Product
 {
@@ -35,7 +34,7 @@ namespace Architecture2.Logic.Product
         public class QueryHandler : CollectionQueryTemplateHandler<Query, ProductItem, ICollectionRepository<ProductItem, Query>>
         {
 
-            public QueryHandler(ICollectionRepository<ProductItem, Query> collectionRepository, IValidator<Query> validator) : base(validator, collectionRepository)
+            public QueryHandler(ICollectionRepository<ProductItem, Query> collectionRepository) : base(null, collectionRepository)
             {
             }
         }
