@@ -16,7 +16,7 @@ using FluentValidation;
 
 namespace Architecture2.Logic.Product
 {
-    public class FindPaged
+    public class FindPagedCollection
     {
         public class Query : SortPageSizeSkip<ProductItem>
         {

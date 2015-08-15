@@ -15,9 +15,9 @@ namespace Architecture2.Web.Controller
         }
 
         [HttpGet]
-        public PagedCollectionResult<FindPaged.ProductItem> FindPaged(int? pageSize, int? skip, string code = null, string name = null, string sort = null)
+        public PagedCollectionResult<FindPagedCollection.ProductItem> FindPaged(int? pageSize, int? skip, string code = null, string name = null, string sort = null)
         {
-            return _mediator.Send(new FindPaged.Query {PageSize = pageSize, Skip = skip, SortExp = sort, Code = code, Name = name });
+            return _mediator.Send(new FindPagedCollection.Query {PageSize = pageSize, Skip = skip, SortExp = sort, Code = code, Name = name });
         }
 
         [HttpDelete]
