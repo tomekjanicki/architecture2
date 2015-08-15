@@ -7,7 +7,7 @@ namespace Architecture2.Common.TemplateMethod.Query
 {
     public abstract class QueryTemplateHandler<TQuery, TItem, TRepository> : IRequestHandler<TQuery, Result<TItem>>
         where TQuery : IRequest<Result<TItem>>
-        where TRepository : IRepository<TItem, TQuery>
+        where TRepository : IRepository<TItem, Result<TItem>, TQuery>
 
     {
         protected readonly TRepository Repository;
