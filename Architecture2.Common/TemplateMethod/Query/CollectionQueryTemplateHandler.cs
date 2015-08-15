@@ -7,7 +7,7 @@ using FluentValidation;
 namespace Architecture2.Common.TemplateMethod.Query
 {
     public abstract class CollectionQueryTemplateHandler<TQuery, TItem, TCollectionRepository> : QueryTemplateHandler<TQuery, TItem, TCollectionRepository>
-        where TQuery : Sort<TItem> 
+        where TQuery : Sort<TItem, CollectionResult<TItem>> 
         where TCollectionRepository : ICollectionRepository<TItem, CollectionResult<TItem>, TQuery>
         where TItem : IReadOnlyCollection<TItem>
     {
