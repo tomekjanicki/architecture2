@@ -38,7 +38,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
             }
 
             [Test]
-            public void Send_ThrowsBaseException_IsHandled()
+            public void Handle_ThrowsBaseException_IsHandled()
             {
                 var items = TenOldestMailDefinitionItems();
 
@@ -52,7 +52,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
             }
 
             [Test]
-            public void Send_ThrowsException_IsNotHandled()
+            public void Handle_ThrowsException_IsNotHandled()
             {
                 var items = TenOldestMailDefinitionItems();
 
