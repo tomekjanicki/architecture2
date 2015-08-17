@@ -18,7 +18,7 @@ namespace Architecture2.Common.TemplateMethod.Command
 
         protected DeleteCommandTemplateHandler(IValidator<TCommand> validator, TDeleteRepository deleteRepository)
         {
-            Guard.NotNull(DeleteRepository, nameof(DeleteRepository));
+            Guard.NotNull(deleteRepository, nameof(deleteRepository));
             Guard.NotNull(validator, nameof(validator));
             _validator = validator;
             DeleteRepository = deleteRepository;

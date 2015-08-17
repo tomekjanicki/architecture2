@@ -18,7 +18,7 @@ namespace Architecture2.Common.TemplateMethod.Command
 
         protected UpdateCommandTemplateHandler(IValidator<TCommand> validator, TUpdateRepository updateRepository)
         {
-            Guard.NotNull(UpdateRepository, nameof(UpdateRepository));
+            Guard.NotNull(updateRepository, nameof(updateRepository));
             Guard.NotNull(validator, nameof(validator));
             _validator = validator;
             UpdateRepository = updateRepository;

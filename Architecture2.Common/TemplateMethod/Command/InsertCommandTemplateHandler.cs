@@ -15,7 +15,7 @@ namespace Architecture2.Common.TemplateMethod.Command
 
         protected InsertCommandTemplateHandler(IValidator<TCommand> validator, TInsertRepository insertRepository)
         {
-            Guard.NotNull(InsertRepository, nameof(insertRepository));
+            Guard.NotNull(insertRepository, nameof(insertRepository));
             Guard.NotNull(validator, nameof(validator));
 
             _validator = validator;
