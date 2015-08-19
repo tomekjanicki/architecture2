@@ -11,7 +11,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
 {
     public static class Send
     {
-        public class CommandHandlerTest : BaseTest
+        public class WhenSendingItems : BaseTest
         {
             private Logic.Mail.Send.CommandHandler _sut;
             private Logic.Mail.Send.IRepository _repository;
@@ -26,7 +26,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
             }
 
             [Test]
-            public void Handle_ValidItem_Sent()
+            public void ShouldSendAll_IfNoExceptionIsThrown()
             {
                 var items = TenOldestMailDefinitionItems();
 
@@ -38,7 +38,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
             }
 
             [Test]
-            public void Handle_ThrowsBaseException_IsHandled()
+            public void ShouldHandle_IfExceptionWhichInheritsFromBaseExceptionIsThrown()
             {
                 var items = TenOldestMailDefinitionItems();
 
@@ -52,7 +52,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
             }
 
             [Test]
-            public void Handle_ThrowsException_IsNotHandled()
+            public void ShouldNotHandle_IfExceptionWhichDoesNotInheritFromBaseExceptionIsThrown()
             {
                 var items = TenOldestMailDefinitionItems();
 

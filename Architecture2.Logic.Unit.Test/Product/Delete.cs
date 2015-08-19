@@ -12,7 +12,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 {
     public static class Delete
     {
-        public class CommandHandlerTest : BaseTest
+        public class WhenDeletingProduct : BaseTest
         {
             private Logic.Product.Delete.CommandHandler _sut;
 
@@ -28,7 +28,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Handle_ValidArgument_Delete()
+            public void ShouldDelete_IfCommandIsValid()
             {
                 var version = new byte[0];
 
@@ -48,7 +48,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Handle_InvalidArgument_ThrowsException()
+            public void ShouldThrowException_IfCommandIsInvalid()
             {
                 var command = new Logic.Product.Delete.Command();
 
@@ -58,7 +58,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Handle_NotFound_ThrowsException()
+            public void ShouldThrowException_IfProductNotFound()
             {
                 var version = new byte[0];
 
@@ -74,7 +74,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Handle_CantDelete_ThrowsException()
+            public void ShouldThrowException_IfProductCannotBeDeleted()
             {
                 var version = new byte[0];
 
@@ -92,7 +92,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Handle_WrongVersion_ThrowsException()
+            public void ShouldThrowException_IfCommandHasWrongVersion()
             {
                 var version1 = new byte[0];
 
@@ -111,7 +111,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
         }
 
-        public class CommandValidatorTest : BaseTest
+        public class WhenValidatingProductCommand : BaseTest
         {
             private Logic.Product.Delete.CommandValidator _sut;
 
@@ -128,7 +128,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_ValidArgument_NoErrors()
+            public void ShouldReturnNoErrors_IfCommandIsValid()
             {
                 var command = new Logic.Product.Delete.Command {Id = 1, Version = new byte[] {5}};
 
@@ -138,7 +138,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_IdNull_Error()
+            public void ShouldReturnError_IfCommandHasIdEqualToNull()
             {
                 var command = new Logic.Product.Delete.Command { Version = new byte[] { 5 } };
 
@@ -149,7 +149,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
 
             [Test]
-            public void Validate_VersionNull_Error()
+            public void ShouldReturnError_IfCommandHasVersionEqualToNull()
             {
                 var command = new Logic.Product.Delete.Command { Id = 1 };
 
@@ -159,7 +159,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_VersionEmpty_Error()
+            public void ShouldReturnError_IfCommandHasVersionEqualToEmptyArray()
             {
                 var command = new Logic.Product.Delete.Command { Id = 1, Version = new byte[0]};
 
@@ -169,7 +169,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_NullArgument_Error()
+            public void ShouldReturnError_IfCommandIsNull()
             {
                 var result = _sut.Validate((Logic.Product.Delete.Command)null);
 
