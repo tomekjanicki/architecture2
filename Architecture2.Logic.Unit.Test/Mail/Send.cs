@@ -11,7 +11,7 @@ namespace Architecture2.Logic.Unit.Test.Mail
 {
     public static class Send
     {
-        public class WhenSendingItems : BaseTest
+        public class WhenSendingMails : BaseTest
         {
             private Logic.Mail.Send.CommandHandler _sut;
             private Logic.Mail.Send.IRepository _repository;

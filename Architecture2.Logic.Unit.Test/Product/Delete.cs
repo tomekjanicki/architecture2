@@ -111,7 +111,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
         }
 
-        public class WhenValidatingProductCommand : BaseTest
+        public class WhenValidatingDeleteProductCommand : BaseTest
         {
             private Logic.Product.Delete.CommandValidator _sut;
 

@@ -13,7 +13,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 {
     public static class FindPagedCollection
     {
-        public class QueryHandlerTest : BaseTest
+        public class WhenFindingProductPage : BaseTest
         {
             private Logic.Product.FindPagedCollection.QueryHandler _sut;
             private IPagedCollectionRepository<Logic.Product.FindPagedCollection.ProductItem, Logic.Product.FindPagedCollection.Query> _collectionRepository;
@@ -28,7 +28,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Handle_ValidArgument_ReturnsData()
+            public void ShouldReturnData_IfQueryIsValid()
             {
                 var query = new Logic.Product.FindPagedCollection.Query();
 
@@ -42,7 +42,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Handle_InvalidArgument_ThrowsException()
+            public void ShouldThrowException_IfArgumentIsInvalid()
             {
                 var query = new Logic.Product.FindPagedCollection.Query();
 
@@ -53,7 +53,7 @@ namespace Architecture2.Logic.Unit.Test.Product
 
         }
 
-        public class QueryValidatorTest : BaseTest
+        public class WhenValidatingFindPagedCollectionQuery : BaseTest
         {
             private Logic.Product.FindPagedCollection.QueryValidator _sut;
 
@@ -70,7 +70,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_ValidArgument_NoErrors ()
+            public void ShouldReturnNoErrors_IfQueryIsValid()
             {
                 var query = new Logic.Product.FindPagedCollection.Query {PageSize = 20, Skip = 5};
 
@@ -80,7 +80,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_PageSizeNull_Error()
+            public void ShouldReturnError_IfQueryHasPageSizeEqualToNull()
             {
                 var query = new Logic.Product.FindPagedCollection.Query { Skip = 5 };
 
@@ -90,7 +90,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_SkipNull_Error()
+            public void ShouldReturnError_IfQueryHasSkipEqualToNull()
             {
                 var query = new Logic.Product.FindPagedCollection.Query { PageSize = 1 };
 
@@ -100,7 +100,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_PageSizeTooSmall_Error()
+            public void ShouldReturnError_IfQueryHasPageSizeTooSmall()
             {
                 var query = new Logic.Product.FindPagedCollection.Query { PageSize  = 0, Skip = 5 };
 
@@ -110,7 +110,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_SkipTooSmall_Error()
+            public void ShouldReturnError_IfQueryHasSkipTooSmall()
             {
                 var query = new Logic.Product.FindPagedCollection.Query { Skip = -1, PageSize = 1};
 
@@ -120,7 +120,7 @@ namespace Architecture2.Logic.Unit.Test.Product
             }
 
             [Test]
-            public void Validate_NullArgument_Error()
+            public void ShouldReturnError_IfQueryIsNull()
             {
                 var result = _sut.Validate((Logic.Product.FindPagedCollection.Query)null);
 

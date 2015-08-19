@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace Architecture2.Common.Unit.Test.Exception
 {
-    public class ExceptionConverterTest : BaseTest
+    public class WhenHandlingAction : BaseTest
     {
         private ExceptionConverter _exceptionConverter;
 
@@ -17,19 +17,19 @@ namespace Architecture2.Common.Unit.Test.Exception
         }
 
         [Test]
-        public void HandleAction_ThrowConfiguredExceptionType_ThrowsWrapedException()
+        public void ShouldThrowWrapedException_IfConfiguredExceptionTypeIsThrown()
         {
             Assert.Catch<MailServiceException>(() => _exceptionConverter.HandleAction(() => { throw new SmtpException(); }));
         }
 
         [Test]
-        public void HandleAction_ThrowInheritedExceptionType_ThrowsWrapedException()
+        public void ShouldThrowWrapedException_IfConfiguredInheritedExceptionTypeIsThrown()
         {
             Assert.Catch<MailServiceException>(() => _exceptionConverter.HandleAction(() => { throw new SmtpFailedRecipientException(); }));
         }
 
         [Test]
-        public void HandleAction_ThrowNotConfiguredExceptionType_ThrowsOrginalException()
+        public void ShouldThrowOriginalException_IfNotConfiguredExceptionTypeIsThrown()
         {
             Assert.Catch<System.Exception>(() => _exceptionConverter.HandleAction(() => { throw new System.Exception(); }));
         }

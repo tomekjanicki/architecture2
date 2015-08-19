@@ -8,10 +8,10 @@ using NUnit.Framework;
 
 namespace Architecture2.Web.Unit.Test
 {
-    public class IoCTest : BaseTest
+    public class WhenResolvingControllerDependencies : BaseTest
     {
         [Test]
-        public void ResolveAllControllers()
+        public void ShouldReturnNoError_IfDependenciesAreSet()
         {
             var webAssembly = typeof(Startup).Assembly;
 

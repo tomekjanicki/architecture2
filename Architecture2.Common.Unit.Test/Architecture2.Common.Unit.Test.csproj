@@ -44,9 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exception\ExceptionConverterTest.cs" />
+    <Compile Include="Exception\WhenHandlingAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tool\ExtensionTest.cs" />
+    <Compile Include="Tool\WhenCheckingType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

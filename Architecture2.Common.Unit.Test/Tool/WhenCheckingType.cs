@@ -7,10 +7,10 @@ using NUnit.Framework;
 
 namespace Architecture2.Common.Unit.Test.Tool
 {
-    public class ExtensionTest : BaseTest
+    public class WhenCheckingType : BaseTest
     {
         [Test]
-        public void IsType_Type_ReturnsTrue()
+        public void ShouldReturnTrue_IfArgumentIsTheSameTypeAsExpectedType()
         {
             var exception = new ArgumentNullException();
 
@@ -18,7 +18,7 @@ namespace Architecture2.Common.Unit.Test.Tool
         }
 
         [Test]
-        public void IsType_Type_ReturnsFalse()
+        public void ShouldReturnFalse_IfArgumentIsNotTheSameTypeAsExpectedTypeOrSubTypeOfExpectedType()
         {
             var exception = new ArgumentNullException();
 
@@ -26,7 +26,7 @@ namespace Architecture2.Common.Unit.Test.Tool
         }
 
         [Test]
-        public void IsType_SubType_ReturnsTrue()
+        public void ShouldReturnTrue_IfArgumentIsSubTypeOfExpectedType()
         {
             var exception = new ArgumentNullException();
 
@@ -34,7 +34,7 @@ namespace Architecture2.Common.Unit.Test.Tool
         }
 
         [Test]
-        public void IsType_GenericType_ReturnsTrue()
+        public void ShouldReturnTrue_IfGenericArgumentIsTheSameTypeAsExpectedType()
         {
             var exception = new NotFoundException<object>("");
 
@@ -42,7 +42,7 @@ namespace Architecture2.Common.Unit.Test.Tool
         }
 
         [Test]
-        public void IsType_SubGenericType_ReturnsTrue()
+        public void ShouldReturnTrue_IfGenericArgumentIsSubTypeOfExpectedType()
         {
             var exception = new NotFoundException<object>("");
 
